@@ -2,6 +2,9 @@ import codecs
 import time
 import re 
 
+
+import matplotlib.pyplot as plt
+
 print("reading started")
 start_time = time.time()
 i = 0
@@ -18,7 +21,7 @@ def get_entries_element(splited_entries, name):
 s = set()
 d = {}
 
-def score_lesson(lesson, score):
+def score_lesson(lesson, score, user=None):
 	global d
 	tmp = d.get(lesson, [0, 0])
 	tmp[1] += 1
@@ -145,3 +148,5 @@ print("prining set (size: {})".format(len(s)))
 for string in s:
 	print(string)
 
+plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
+plt.show()

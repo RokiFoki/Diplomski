@@ -2,20 +2,23 @@ import codecs
 import time
 import re 
 
+
+import matplotlib.pyplot as plt
+
 print("reading started")
 start_time = time.time()
 i = 0
 j = 0
 k = 0
 
-lesson = {}
+lessons = {}
 
 with codecs.open("lessons.txt", "r", "utf-8-sig") as fin:
 	for line in fin:
 		a, b = line.split()
 		a, b = int(a), float(b)
 		
-		lesson[a] = b
+		lessons[a] = b
 		
 def get_entries_element(splited_entries, name):
 	n = len(splited_entries)
@@ -28,7 +31,7 @@ def get_entries_element(splited_entries, name):
 s = set()
 d = {}
 
-def score_user(user, score):
+def score_user(user, score, lesson=None):
 	global d
 	tmp = d.get(user, [0, 0])
 	tmp[1] += 1
@@ -70,15 +73,20 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					logEntries = x["logDetails"]["logEntries"]
 				
 					if isinstance(logEntries[0], dict): #498
-						return
-				
+						members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
+														
+						user_index = members.index(name)
+							
+						if user_index != 1: return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 						j+=1
+						
 						for logEntrie in logEntries:
+														
 							#j += 1
 							problem = logEntrie["problem"]
 							
 							if "correct" in problem and problem["correct"] is not None:
-								score_lesson(lesson, problem["correct"])
+								score_user(name, problem["correct"])
 							else:
 								if "fourthPart" in problem:
 									string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]+"="+problem["fourthPart"]
@@ -91,13 +99,13 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									first = eval(first)
 									second = eval(second)
 									
-									#score_lesson(lesson, first == second)
+									score_user(name, first == second)
 								except:
 									print(problem, problem["correct"] if "correct" in problem else  "??")
 									print(string)
 									print()
 									
-									#score_lesson(lesson, False)
+									score_user(name, False)
 					elif isinstance(logEntries[0], str): #1657
 						j += 1
 						
@@ -112,14 +120,14 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						
 						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 						
+						checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
+						
 						if "?" in problemFormula: 						
 							solvedProblem = problemFormula.replace('?', editorAnswer)
 							first, second = solvedProblem.split("=")
 															
 							first = eval(first.replace('·', '*').replace(':', '/'))
 							second = eval(second)
-							
-							checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
 							
 							if user_index == 0: #editor
 								score_user(name, first == second)
@@ -144,10 +152,13 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 										score_user(name, authorA == eval(editorAnswer))
 									except:
 										score_user(name, False)
-							else: # checker
+							else: # checker ZERO times
 								k += 1
+								good = (authorAnswer == first and editorAnswer == second)
 								
-								
+								checkerGood = checkerAnswer == "Ok"
+
+								score_user(name, checkerAnswer == good)
 								
 								
 							# for inx in range(len(split_logEntries) // 2):
@@ -187,4 +198,6 @@ with codecs.open('users.txt', "w", 'utf-8-sig') as fout:
 print("prining set (size: {})".format(len(s)))
 for string in s:
 	print(string)
-
+	
+plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
+plt.show()

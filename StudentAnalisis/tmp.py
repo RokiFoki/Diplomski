@@ -1,60 +1,86 @@
-"""
-	script downloads data from SQL server and stores it in download.txt line by line,
-	also converts:
-		null  -> None
-		true  -> True
-		false -> False
+def calculate_fitness(test):
+	a, b = 0, 0
 	
-"""
-import pymssql
-import codecs
-import time
+	for t in test:
+	
+		if t[1]:
+			b += 1 * t[0]
+			a += 1 * t[0]
+		else:
+			b += 1 / t[0]
+			a += 0
+	
+	print(a, b)
+	return a / b
 
-IP = '161.53.18.12:1955'
-username = 'roko'
-password = 'g546z6rhtf'
-DBname='ExperientialSamplingAnalyticsDev'
+test1 = [
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[1, 1],
+]
+print("{}, {}".format("test1", calculate_fitness(test1)))
 
-conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
-print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
+test2 = [	
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[2, 1],
+]
+print("{}, {}".format("test2", calculate_fitness(test2)))
 
-cursor = conn.cursor()  
+test3 = [	
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[2, 0],
+]
+print("{}, {}".format("test3", calculate_fitness(test3)))
 
-query = '''
-SELECT TOP 1 [User].Name, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams) FROM LogEvent 
-JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
-JOIN [User] ON ContextualInfo.UserId = [User].Id
-WHERE JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' 
-AND ( 
-	(ContextualInfo.Time BETWEEN '12/01/2016' and '12/01/2016 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '12/09/2016' and '12/09/2016 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '01/18/2017' and '01/18/2017 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '01/19/2017' and '01/19/2017 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '02/22/2017' and '02/22/2017 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '03/24/2017' and '03/24/2017 23:59:59') 
-)
-AND [User].Name = 'MARKO KNEŽEVIĆ'
-'''
-print("executing query ({})".format(query))
-cursor.execute(query)
+test4 = [	
+	[1, 1],
+	[1, 1],
+	[1, 1],
+	[1, 0],
+	[2, 1],
+]
+print("{}, {}".format("test4", calculate_fitness(test4)))
 
-print("query executed") 
+test5 = [	
+	[1, 1],
+	[2, 1],
+	[2, 1],
+	[2, 1],
+	[2, 1],
+]
+print("{}, {}".format("test5", calculate_fitness(test5)))
 
-i = 0
-start_time = time.time()
-with codecs.open('download.txt', 'w', "utf-8-sig") as f:
-	for row in cursor:	
-		i += 1
-		if time.time() - start_time > 10: 
-			start_time = time.time()
-			print("i", i)
-		
-		
-		print(str(row))	
-		row = str(row).replace('null', 'None').replace('true', 'True').replace('false', 'False')
-		
-		f.write("{}\n".format(row))
-		
-print("i", i)
-print('closing connection')
-conn.close() 
+test6 = [	
+	[1, 0],
+	[2, 1],
+	[2, 1],
+	[2, 1],
+	[2, 1],
+]
+print("{}, {}".format("test6", calculate_fitness(test6)))
+# riješio teški ali pogriješio nešto banalno
+
+
+test7 = [	
+	[1, 1],
+	[2, 0],
+	[2, 1],
+	[2, 1],
+	[2, 1],
+]
+print("{}, {}".format("test7", calculate_fitness(test7)))
+
+
+
+
+
+#N, N; 0, 0.5; N,N+0.5
+#N-1, N; 2, 2; N+1, N+2
