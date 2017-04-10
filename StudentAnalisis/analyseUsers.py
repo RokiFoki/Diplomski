@@ -100,7 +100,6 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					elif isinstance(logEntries[0], str): #1657
 						#j += 1
 						
-						print
 						
 						split_logEntries = logEntries[0].split(";")
 						
@@ -108,18 +107,27 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						split_grupa = [a.strip() for a in grupa.split(",")]
 						user_index = split_grupa.index(name)
 						
-						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
-						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
+
+						if len(split_logEntries) == 22:
+							problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
+							
+							s.add(str(split_logEntries))
+							
+						if user_index == 0: #author
+							pass
+						elif user_index == 1: #editor
+							problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
+							editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
+							
+							editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+							
+							solvedProblem = problemFormula.replace('?', editorAnswer)
+							first, second = solvedProblem.split("=")
+															
+							first = eval(first.replace('·', '*').replace(':', '/'))
+							second = eval(second)
 						
-						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
-						
-						solvedProblem = problemFormula.replace('?', editorAnswer)
-						first, second = solvedProblem.split("=")
-														
-						first = eval(first.replace('·', '*').replace(':', '/'))
-						second = eval(second)
-						
-						score_lesson(lesson, first == second)
+							#score_lesson(lesson, first == second)
 						
 					else:
 						# nikad se ne dogodi

@@ -57,11 +57,15 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					
 					lesson = x["lesson"]					
 					logEntries = x["logDetails"]["logEntries"]
+					
+					if lesson == "553":
+						print(x)
+						
+						time.sleep(2)
 				
 					if isinstance(logEntries[0], dict): #498
 						j+=1
 						for logEntrie in logEntries:
-							#j += 1
 							problem = logEntrie["problem"]
 							
 							if "correct" in problem and problem["correct"] is not None:
@@ -86,7 +90,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									
 									score_lesson(lesson, False)
 					elif isinstance(logEntries[0], str): #1657
-						#j += 1
+						j += 1
 						
 						split_logEntries = logEntries[0].split(";")
 						
@@ -99,13 +103,19 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						
 						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 						
-						solvedProblem = problemFormula.replace('?', editorAnswer)
-						first, second = solvedProblem.split("=")
-														
-						first = eval(first.replace('·', '*').replace(':', '/'))
-						second = eval(second)
+						if "?" in problemFormula: 						
+							solvedProblem = problemFormula.replace('?', editorAnswer)
+							first, second = solvedProblem.split("=")
+															
+							first = eval(first.replace('·', '*').replace(':', '/'))
+							second = eval(second)
+							
+							score_lesson(lesson, first == second)
+						else:
+							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
+							#print(authorAnswer+"="+editorAnswer, problemFormula)
 						
-						score_lesson(lesson, first == second)
+							score_lesson(lesson, authorAnswer+"="+editorAnswer == problemFormula)
 						
 					else:
 						# nikad se ne dogodi

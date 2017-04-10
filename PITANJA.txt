@@ -40,3 +40,20 @@ mali:
 ['Lekcija;Tezina;Grupa;AuthorElapsedTime;EditorElapsedTime;CheckerElapsedTime;AuthorAnswer;EditorAnswer;CheckerAnswer;ProblemNumber;ProblemFormula;formule_1r;1;LUKA HOTKO,MARKO KNEŽEVIC,EMA SARA MATOŠEVIC;62521;22517;6795;10+6;16;Ok;1;10+6=16']
 veliki:
 [{'rbrZapis': 1, 'problem': {'firstPart': '21', 'secondPart': '', 'thirdPart': '+8=29', 'correct': True, 'unknown': 'firstPart', 'startTime': 1480576523375, 'problemNumber': 1, 'endTime': 1480576542632, 'waitingForChecker': None}, 'vrijeme': 19257}, {'rbrZapis': 2, 'problem': {'firstPart': '51+5=', 'secondPart': '56', 'thirdPart': '', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576554624, 'problemNumber': 2, 'endTime': 1480576565814, 'waitingForChecker': None}, 'vrijeme': 11190}, {'rbrZapis': 3, 'problem': {'firstPart': '43+2=', 'secondPart': '45', 'thirdPart': '', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576570788, 'problemNumber': 3, 'endTime': 1480576576022, 'waitingForChecker': None}, 'vrijeme': 5234}, {'rbrZapis': 4, 'problem': {'firstPart': '65+', 'secondPart': '5', 'thirdPart': '=70', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576580211, 'problemNumber': 4, 'endTime': 1480576584943, 'waitingForChecker': None}, 'vrijeme': 4732}, {'rbrZapis': 5, 'problem': {'firstPart': '26+', 'secondPart': '3', 'thirdPart': '=29', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576587903, 'problemNumber': 5, 'endTime': 1480576592509, 'waitingForChecker': None}, 'vrijeme': 4606}, {'rbrZapis': 6, 'problem': {'firstPart': '72', 'secondPart': '', 'thirdPart': '+6=78', 'correct': True, 'unknown': 'firstPart', 'startTime': 1480576595341, 'problemNumber': 6, 'endTime': 1480576600745, 'waitingForChecker': None}, 'vrijeme': 5404}, {'rbrZapis': 7, 'problem': {'firstPart': '91', 'secondPart': '', 'thirdPart': '+8=99', 'correct': True, 'unknown': 'firstPart', 'startTime': 1480576606735, 'problemNumber': 7, 'endTime': 1480576616013, 'waitingForChecker': None}, 'vrijeme': 9278}, {'rbrZapis': 8, 'problem': {'firstPart': '27+2=', 'secondPart': '29', 'thirdPart': '', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576620447, 'problemNumber': 8, 'endTime': 1480576624992, 'waitingForChecker': None}, 'vrijeme': 4545}, {'rbrZapis': 9, 'problem': {'firstPart': '71+', 'secondPart': '6', 'thirdPart': '=77', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576629283, 'problemNumber': 9, 'endTime': 1480576633413, 'waitingForChecker': None}, 'vrijeme': 4130}, {'rbrZapis': 10, 'problem': {'firstPart': '41+7=', 'secondPart': '48', 'thirdPart': '', 'correct': True, 'unknown': 'secondPart', 'startTime': 1480576637350, 'problemNumber': 10, 'endTime': 1480576641858, 'waitingForChecker': None}, 'vrijeme': 4508}]
+--------------------------------------
+
+redosljed ljudi autor, editor checker?
+['Lekcija', 'Tezina', 'Grupa', 'AuthorElapsedTime', 'EditorElapsedTime', 'CheckerElapsedTime', 'AuthorAnswer', 'EditorAnswer', 'CheckerAnswer', 'ProblemNumber', 'ProblemFormula', 'formule_1r', '1', 'LUKA HOTKO,MARKO KNEŽEVIC,EMA SARA MATOŠEVIC', '62521', '22517', '6795', '10+6', '16', 'Ok', '1', '10+6=16']
+
+redosljed ljudi autor, editor checker?
+['Lekcija', 'Tezina', 'Grupa', 'EditorElapsedTime', 'CheckerElapsedTime', 'EditorAnswer', 'CheckerAnswer', 'ProblemNumber', 'ProblemFormula', '1razred_do10_1', '1', 'NICOLLE BLAŽINIC,LOVRO PERESTEGI', 'undefined', 'NaN', '5', 'Ok', '1', '2+3=?']
+
+--------------------------------------
+nedostaje li ovdje checker?
+['Lekcija', 'Tezina', 'Grupa', 'AuthorElapsedTime', 'EditorElapsedTime', 'CheckerElapsedTime', 'AuthorAnswer', 'EditorAnswer', 'CheckerAnswer', 'ProblemNumber', 'ProblemFormula', 'formule_2r', '2', 'EVA GLAVINIC ,BENJAMIN HADŽIC ', '65533', 'undefined', 'NaN', '35+7', '42', 'Ok', '1', '35+7=42']
+
+----------------------------------------------
+težina zadatka ovisi o uspješnosti uèenika koji su ga riješili (ili pogrešno riješili)
+uspješnost uèenika ovisi o težini zadatka
+
+ciklièka ovisnost - u iteracijama do konvergencije
