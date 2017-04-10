@@ -57,3 +57,11 @@ težina zadatka ovisi o uspješnosti uèenika koji su ga riješili (ili pogrešno rij
 uspješnost uèenika ovisi o težini zadatka
 
 ciklièka ovisnost - u iteracijama do konvergencije
+
+logovi nisu konzistenti
+--------------------------------------------
+CHECKERI NE POSTOJE?????
+bar ne preko contextualInfo, 0 puta se dogodilo da je contextualInfo bio netko tko je bio checker
+_------------------------------------------
+
+vidi li editor (checker) -> pocetni problem
