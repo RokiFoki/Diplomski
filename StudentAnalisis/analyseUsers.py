@@ -6,6 +6,7 @@ print("reading started")
 start_time = time.time()
 i = 0
 j = 0
+k = 0
 
 lesson = {}
 
@@ -58,7 +59,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 			params = eval(JSONParams)
 			
 			def wrapper(x): 
-				global j
+				global j, k
 				if "inputParams" in x["logDetails"]:
 					isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 					
@@ -90,16 +91,15 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									first = eval(first)
 									second = eval(second)
 									
-									score_lesson(lesson, first == second)
+									#score_lesson(lesson, first == second)
 								except:
 									print(problem, problem["correct"] if "correct" in problem else  "??")
 									print(string)
 									print()
 									
-									score_lesson(lesson, False)
+									#score_lesson(lesson, False)
 					elif isinstance(logEntries[0], str): #1657
-						#j += 1
-						
+						j += 1
 						
 						split_logEntries = logEntries[0].split(";")
 						
@@ -107,28 +107,53 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						split_grupa = [a.strip() for a in grupa.split(",")]
 						user_index = split_grupa.index(name)
 						
-
-						if len(split_logEntries) == 22:
-							problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
-							
-							s.add(str(split_logEntries))
-							
-						if user_index == 0: #author
-							pass
-						elif user_index == 1: #editor
-							problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
-							editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
-							
-							editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
-							
+						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
+						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
+						
+						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+						
+						if "?" in problemFormula: 						
 							solvedProblem = problemFormula.replace('?', editorAnswer)
 							first, second = solvedProblem.split("=")
 															
 							first = eval(first.replace('·', '*').replace(':', '/'))
 							second = eval(second)
-						
-							#score_lesson(lesson, first == second)
-						
+							
+							checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
+							
+							if user_index == 0: #editor
+								score_user(name, first == second)
+							else: #checker ZERO TIMES!!!!!!!!!
+								score_user(name, first == second if checkerAnswer=="Ok" else first != second)
+						else:
+							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
+							
+							first, second = problemFormula.split("=")
+														
+							if user_index == 0: # author zero times
+								score_user(name, authorAnswer == first)
+							elif user_index == 1: # editor 528 times
+								good = True
+								try:
+									authorA = eval(authorAnswer)
+								except:
+									good = False;
+								
+								if good:
+									try:
+										score_user(name, authorA == eval(editorAnswer))
+									except:
+										score_user(name, False)
+							else: # checker
+								k += 1
+								
+								
+								
+								
+							# for inx in range(len(split_logEntries) // 2):
+								# s.add(split_logEntries[inx])
+								
+							
 					else:
 						# nikad se ne dogodi
 						print(logEntries)
@@ -150,7 +175,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 			
 		
 			
-print(i, j)
+print(i, j, k)
 print("reading finished")
 
 with codecs.open('users.txt', "w", 'utf-8-sig') as fout:

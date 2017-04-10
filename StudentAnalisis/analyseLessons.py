@@ -57,12 +57,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					
 					lesson = x["lesson"]					
 					logEntries = x["logDetails"]["logEntries"]
-					
-					if lesson == "553":
-						print(x)
-						
-						time.sleep(2)
-				
+									
 					if isinstance(logEntries[0], dict): #498
 						j+=1
 						for logEntrie in logEntries:
@@ -113,8 +108,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 							score_lesson(lesson, first == second)
 						else:
 							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
-							#print(authorAnswer+"="+editorAnswer, problemFormula)
-						
+							
 							score_lesson(lesson, authorAnswer+"="+editorAnswer == problemFormula)
 						
 					else:
