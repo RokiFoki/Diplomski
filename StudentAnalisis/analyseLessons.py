@@ -14,8 +14,9 @@ j = 0
 display_graph = len(sys.argv) > 1
 
 users = {}
-if os.path.isfile("users.txt"):
-	with codecs.open("users.txt", "r", "utf-8-sig") as fin:
+users_path = "tmp/users/users.txt"
+if os.path.isfile(users_path):
+	with codecs.open(users_path, "r", "utf-8-sig") as fin:
 		for line in fin:
 			a, b = line.split(":")
 			a, b = a, float(b)
@@ -174,16 +175,29 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 print(i, j)
 print("reading finished")
 
-with codecs.open('lessons.txt', "w", 'utf-8-sig') as fout:
+""" možda ne trbia?
+#IMPORTANT
+# do ovdje je lagan zadatak s 
+for key in d:
+	tmp = d[key]
+	tmp[0] = tmp[1] - tmp[0]
+	d[key] = tmp
+#IMPORTANT
+"""
+
+with codecs.open('tmp/lessons/lessons.txt', "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
 		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
 		
 		
 print("prining set (size: {})".format(len(s)))
-for string in s:
+for string in s:                            
 	print(string)
 
 if display_graph:
+	img_name = "tmp/lessons/{}.png".format(sys.argv[1]);
+
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
-	plt.show()
+	plt.savefig(img_name)
+	print("saved {}".format(img_name))

@@ -3,8 +3,8 @@
 0.5 	1 -> 1,1
 0.5 	0 -> 0,1
 
-0.75 	1 -> 1.5,1.5
-0.75	0 -> 0,1/1.5 = 0.66
+0.25 	1 -> 1.5,1.5
+0.25	0 -> 0,1/1.5 = 0.66
 
 """
 
@@ -59,12 +59,13 @@ def calculate_fitness(test):
 			b += 1 / t[0]
 			a += 1 / t[0]
 		else:
-			b += 1 * t[0]
+			b += 1 * t[0] # trebalo bi moći ići u 0!!!!!
 			a += 0
 	
 	#print(a, b)
 	return a / b
 
+"""
 test1 = [
 	[0.5, 1],
 	[0.5, 1],
@@ -128,3 +129,68 @@ test7 = [
 ]
 print("{}, {}".format("test7", calculate_fitness(test7)))
 
+"""
+
+test1 = [
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+]
+print("{}, {}".format("test1", calculate_fitness(test1)))
+
+test2 = [
+	[0.5, 0],
+	[0.5, 0],
+	[0.5, 0],
+	[0.5, 0],
+	[0.5, 0],
+]
+print("{}, {}".format("test2", calculate_fitness(test2)))
+
+test3 = [
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 0],
+]
+print("{}, {}".format("test3", calculate_fitness(test3)))
+
+test4 = [	
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.75, 0],
+]
+print("{}, {}".format("test4", calculate_fitness(test4)))
+
+test5 = [	
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 1],
+	[0.5, 0],
+	[0.75, 1],
+]
+print("{}, {}".format("test5", calculate_fitness(test5)))
+
+
+test6 = [	
+	[0.5, 0],
+	[0.75, 1],
+	[0.75, 1],
+	[0.75, 1],
+	[0.75, 1],
+]
+print("{}, {}".format("test6", calculate_fitness(test6)))
+
+test7 = [	
+	[0.5, 1],
+	[0.75, 0],
+	[0.75, 1],
+	[0.75, 1],
+	[0.75, 1],
+]
+print("{}, {}".format("test7", calculate_fitness(test7)))

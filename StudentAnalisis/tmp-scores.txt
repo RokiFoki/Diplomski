@@ -1,0 +1,133 @@
+Računanje "dobrote" učenika iz težina i riješenosti zadataka
+
+zadaci su u range [0, 1]. 0 je najteži (npr. 0% riješenost), a 1 najlakši (npt. 100% riješenost) 
+
+1. stupac = težina zadatka [0, 1]
+2. stupac = 1 - točno, 0 - krivo
+
+rezultat [0, 1]. 0 je učenik s najmanjom "dobrotom", dok je učenik s 1 s najboljom "dobrotom"
+
+0.5		1    
+0.5		1
+0.5		1
+0.5		1
+0.5		0
+______
+=0.8 (jer je normalna težina zadataka pa se gleda običan omjer)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+0.25	1
+_____
+1.0 (jer su svi točno riješeni)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+0.25	0
+_____
+>0.8 (jer kad bi teži zadatak bio kao i svi ostali onda bi rezultat bio =0.8)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		0
+0.25	1
+_____
+>0.75 (jer kad nebi postojao teži zadatak rezultat bi bio =0.75)
+>0.8 (jer kad bi teži zadatak bio kao i svi ostali rezultat bi bio =0.8)
++
+	
+0.25	1
+0.25	1
+0.25	1
+0.5		1
+0.25	1
+_____
+1.0 (jer su svi riješeni)
+	
+0.25	1
+0.25	1
+0.25	1
+0.5		1
+0.25	0
+_____
+>0.8 (jer kad bi svi zadaci koje je riješio bili "normalni" imao bi 0.8 score)
+++
+
+
+0.25	1
+0.25	1
+0.25	1
+0.5		0
+0.25	1
+_____
+>0.8 (jer kad bi svi zadaci koje je riješio bili "normalni" imao bi 0.8 score)
++++
+
+--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
+Računanje težine zadataka iz "dobrote" učenika i riješenosti zadataka
+
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+_____
+=1.0 (najlakši zadatak - svi ga riješili)
+
+0.5		0
+0.5		0
+0.5		0
+0.5		0
+0.5		0
+_____
+=0.0 (najteži zadatak - nitko ga nije riješio)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+0.5		0
+_____
+=0.8 (80% ih je riješilo)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		1
+0.75	0
+______
+<0.8 (zadatak je teži nego da ga samo jedna normalna osoba nije riješila - prethodni slučaj)
+
+0.5		1
+0.5		1
+0.5		1
+0.5		0
+0.75	1
+______
+=<0.8 (zadatak je teži nego da ga samo jedna nornalna osoba nije riješila - kad bi umijesto pametne osobe stavili normalnu ako pogriješi onda je <0.8 inaće je =0.8)
+
+0.75	1
+0.75	1
+0.75	1
+0.75	1
+0.5		0
+_____
+=<0.8 (zadatak je teži jer kad bi ga rješavali samo samo normalni ljudi vjerojatnije je bi ih manje riješilo) 
+
+
+0.75	1
+0.75	1
+0.75	1
+0.75	0
+0.5		1
+_____
+<0.8 (zadatak je teži jer od 4 osobe koje su ga riješile su 3 pametne i jedna normalna a normalna ga nije riješila)
+
+
+

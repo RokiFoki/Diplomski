@@ -15,8 +15,9 @@ k = 0
 display_graph = len(sys.argv) > 1
 
 lessons = {}
-if os.path.isfile("lessons.txt"):
-	with codecs.open("lessons.txt", "r", "utf-8-sig") as fin:
+lessons_path = "tmp/lessons/lessons.txt"
+if os.path.isfile(lessons_path):
+	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
 			a, b = line.split(":")
 			a, b = a, float(b)
@@ -216,7 +217,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 print(i, j, k)
 print("reading finished")
 
-with codecs.open('users.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/users/users.txt', "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
 		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
@@ -227,5 +228,8 @@ for string in s:
 	print(string)
 	
 if display_graph:
+	img_name = "tmp/users/{}.png".format(sys.argv[1]);
+
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
-	plt.show()
+	plt.savefig(img_name)
+	print("saved {}".format(img_name))
