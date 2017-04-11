@@ -1,14 +1,26 @@
 import codecs
 import time
 import re 
+import sys
 
-
+import os.path
 import matplotlib.pyplot as plt
 
-print("reading started")
+print("reading started - Lessons")
 start_time = time.time()
 i = 0
 j = 0
+
+display_graph = len(sys.argv) > 1
+
+users = {}
+if os.path.isfile("users.txt"):
+	with codecs.open("users.txt", "r", "utf-8-sig") as fin:
+		for line in fin:
+			a, b = line.split(":")
+			a, b = a, float(b)
+			
+			users[a] = b
 
 def get_entries_element(splited_entries, name):
 	n = len(splited_entries)
@@ -21,11 +33,35 @@ def get_entries_element(splited_entries, name):
 s = set()
 d = {}
 
-def score_lesson(lesson, score, user=None):
+k = 3
+
+A = 1*k
+B = 1
+C = 1/k
+
+a = 2*A - 4*B + 2*C
+b = -A + 4*B -3*C
+c = C
+
+print("a", a, "b", b, "c", c)
+
+def f(x): return a * x**2 + b*x + c
+
+def score_lesson(lesson, score, user):
 	global d
 	tmp = d.get(lesson, [0, 0])
-	tmp[1] += 1
-	tmp[0] += 1 if score else 0
+	
+	if user not in users: 
+		print("{} not in users!".format(user))
+		users[user] = 0.5
+	
+	if score:
+		tmp[1] += 1 / f(users[user])
+		tmp[0] += 1 / f(users[user])
+	else:
+		tmp[1] += 1 * f(users[user])
+		tmp[0] += 0
+		
 	d[lesson] = tmp
 
 with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
@@ -67,7 +103,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 							problem = logEntrie["problem"]
 							
 							if "correct" in problem and problem["correct"] is not None:
-								score_lesson(lesson, problem["correct"])
+								score_lesson(lesson, problem["correct"], name)
 							else:
 								if "fourthPart" in problem:
 									string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]+"="+problem["fourthPart"]
@@ -80,13 +116,13 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									first = eval(first)
 									second = eval(second)
 									
-									score_lesson(lesson, first == second)
+									score_lesson(lesson, first == second, name)
 								except:
 									print(problem, problem["correct"] if "correct" in problem else  "??")
 									print(string)
 									print()
 									
-									score_lesson(lesson, False)
+									score_lesson(lesson, False, name)
 					elif isinstance(logEntries[0], str): #1657
 						j += 1
 						
@@ -108,11 +144,11 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 							first = eval(first.replace('·', '*').replace(':', '/'))
 							second = eval(second)
 							
-							score_lesson(lesson, first == second)
+							score_lesson(lesson, first == second, name)
 						else:
 							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
 							
-							score_lesson(lesson, authorAnswer+"="+editorAnswer == problemFormula)
+							score_lesson(lesson, authorAnswer+"="+editorAnswer == problemFormula, name)
 						
 					else:
 						# nikad se ne dogodi
@@ -141,12 +177,13 @@ print("reading finished")
 with codecs.open('lessons.txt', "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
-		fout.write("{} {}\n".format(lesson, d[lesson][0] / d[lesson][1]))
+		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
 		
 		
 print("prining set (size: {})".format(len(s)))
 for string in s:
 	print(string)
 
-plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
-plt.show()
+if display_graph:
+	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
+	plt.show()
