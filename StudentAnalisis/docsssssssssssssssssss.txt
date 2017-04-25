@@ -1,0 +1,24 @@
+Logove možemo prikazati kao bipartitan graf. 
+Prva bi skupina čvorova bili studenti, dok bi druga skupina bile lekcije. 
+Dok bi veze bile informacije o riješenosti konkretnih zadataka.
+
+Cilj je nekako rangirati studente, udijeliti im dobrotu a ujedno odrediti težine zadataka.
+Očigledno, dobrota studenta ovisi o riješenosti zadataka ali ujedno i o težini istih, dok 
+riješenost zadataka ovisi o dobroti studenata koji su ga riješili (ispravno ili neispravno)
+
+Ovdje nailazimo na problem cikličke ovisnosti, koju je vrlo teško izravno riješiti, stoga ćemo 
+se pripomoći iterativnom naćinu rješavanja. Pretpostaviti ćemo da će svi studenti imaju jednaku
+dobrotu (što je naravno kriva pretpostavka) te izračunati težine zadataka. Potom ćemo učvrstiti
+težine zadataka i izračunati dobrotu studenta. Nakon toga ćemo učvrstiti dobrotu studenata i 
+izračunati težine zadataka i to ponavljati dok obe vrijednosti ne izkonvergiraju ili prođe 
+unaprijed određen broj iteracija.
+
+Dokaz da će takav sustav nećemo navoditi u ovom radu ali nam intuicija govori da postoje 
+vrijednosti dobrote studenata koje će kao posljedicu dati težine lekcija koje posljedično daju
+početne dobrote studenata (inaće ovo računanje nebi imalo smisla). još bi trebalo dokazati da 
+se svakom iteracijom prebližavamo toj vrijednosti.
+
+Još nismo definirali funckiju koja definira ovisnost dobrote učenika o riješenosti zadataka i 
+njihovim težinama. Kako odabrati funkciju? Napravit ćemo uvjete koje funkcija mora zadovoljavati
+te potom uzeti najprikladniju. 
+

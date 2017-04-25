@@ -17,8 +17,7 @@ with codecs.open('quotes.txt', 'r', "utf-8-sig") as fin:
 			i += 1
 			if time.time() - start_time > 10: 
 				print("i", i)
-				start_time = time.time()
-			
+				start_time = time.time()			
 			
 			line = line.replace('AuthorElapsedTime,EditorElapsedTime,CheckerElapsedTime', 'AuthorElapsedTime;EditorElapsedTime;CheckerElapsedTime')
 			line = line.replace('AuthorAnswer,EditorAnswer,CheckerAnswer,ProblemNumber,ProblemFormula', 'AuthorAnswer;EditorAnswer;CheckerAnswer;ProblemNumber;ProblemFormula')

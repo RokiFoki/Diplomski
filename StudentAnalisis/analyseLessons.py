@@ -1,3 +1,7 @@
+"""
+	script that analyses lessons and gives them weights. Usually used at same time with analyseUsers.
+"""
+
 import codecs
 import time
 import re 
@@ -7,15 +11,15 @@ import os.path
 import matplotlib.pyplot as plt
 
 print("reading started - Lessons")
-start_time = time.time()
+start_time = time.time() # save time
 i = 0
 j = 0
 
-display_graph = len(sys.argv) > 1
+display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 users = {}
-users_path = "tmp/users/users.txt"
-if os.path.isfile(users_path):
+users_path = "tmp/users/users.txt" # results will be stored on users_path location
+if os.path.isfile(users_path): # if there are saved weights for the lessons, set them as initial weights
 	with codecs.open(users_path, "r", "utf-8-sig") as fin:
 		for line in fin:
 			a, b = line.split(":")
@@ -24,6 +28,10 @@ if os.path.isfile(users_path):
 			users[a] = b
 
 def get_entries_element(splited_entries, name):
+	"""
+		helper function that gets value from 
+		['name1', 'name2', 'name3', 'value1', 'value2', 'value3'] for the specified name
+	"""
 	n = len(splited_entries)
 	
 	grupa_index = splited_entries.index(name)
@@ -34,6 +42,7 @@ def get_entries_element(splited_entries, name):
 s = set()
 d = {}
 
+"calculating function of dependecies"
 k = 3
 
 A = 1*k
@@ -89,7 +98,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 			
 			def wrapper(x): 
 				global j
-				if "inputParams" in x["logDetails"]:
+				if "inputParams" in x["logDetails"]: # collaborative logs have inputParams
 					isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 					
 					if not isCollaborative: # sve su kolaborativne
@@ -98,7 +107,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					lesson = x["lesson"]					
 					logEntries = x["logDetails"]["logEntries"]
 									
-					if isinstance(logEntries[0], dict): #498
+					if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
 						j+=1
 						for logEntrie in logEntries:
 							problem = logEntrie["problem"]
@@ -124,7 +133,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									print()
 									
 									score_lesson(lesson, False, name)
-					elif isinstance(logEntries[0], str): #1657
+					elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
 						j += 1
 						
 						split_logEntries = logEntries[0].split(";")
@@ -136,9 +145,10 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
 						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
 						
-						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+						# if editorAnswer is empty set it as some random number
+						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer 
 						
-						if "?" in problemFormula: 						
+						if "?" in problemFormula: 	# some problems look like 1 + ? = 3					
 							solvedProblem = problemFormula.replace('?', editorAnswer)
 							first, second = solvedProblem.split("=")
 															

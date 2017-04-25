@@ -37,7 +37,6 @@ _____
 0.5		0
 0.25	1
 _____
->0.75 (jer kad nebi postojao teži zadatak rezultat bi bio =0.75)
 >0.8 (jer kad bi teži zadatak bio kao i svi ostali rezultat bi bio =0.8)
 +
 	
@@ -57,7 +56,6 @@ _____
 _____
 >0.8 (jer kad bi svi zadaci koje je riješio bili "normalni" imao bi 0.8 score)
 ++
-
 
 0.25	1
 0.25	1

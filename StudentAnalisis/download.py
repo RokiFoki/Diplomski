@@ -4,8 +4,8 @@
 		null  -> None
 		true  -> True
 		false -> False
-	
 """
+
 import pymssql
 import codecs
 import time
@@ -37,7 +37,6 @@ AND (
 '''
 print("executing query ({})".format(query))
 cursor.execute(query)
-
 print("query executed") 
 
 i = 0
@@ -50,7 +49,6 @@ with codecs.open('download.txt', 'w', "utf-8-sig") as f:
 			print("i", i)
 			
 		row = str(row).replace('null', 'None').replace('true', 'True').replace('false', 'False').replace('Ć', 'C').replace('Č', 'C').replace('Ð', 'Đ')
-		
 		#gore navedena Đ i Đ nisu ista!!!!!!!!!!
 		
 		f.write("{}\n".format(row))

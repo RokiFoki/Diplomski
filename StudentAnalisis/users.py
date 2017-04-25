@@ -1,6 +1,8 @@
 import codecs
 import re 
 import time
+""" getting all users and storing info in a file """
+
 
 print("reading started")
 

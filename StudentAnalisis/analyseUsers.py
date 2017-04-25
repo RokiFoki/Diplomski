@@ -1,3 +1,7 @@
+"""
+	script that analyses users and gives them weights. Usually used at same time with analyseLessons.
+"""
+
 import codecs
 import time
 import re 
@@ -7,16 +11,16 @@ import os.path
 import matplotlib.pyplot as plt
 
 print("reading started - Users")
-start_time = time.time()
+start_time = time.time() # save time
 i = 0
 j = 0
 k = 0
 
-display_graph = len(sys.argv) > 1
+display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 lessons = {}
-lessons_path = "tmp/lessons/lessons.txt"
-if os.path.isfile(lessons_path):
+lessons_path = "tmp/lessons/lessons.txt" # location of lesson weights
+if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
 			a, b = line.split(":")
@@ -25,21 +29,26 @@ if os.path.isfile(lessons_path):
 			lessons[a] = b
 		
 def get_entries_element(splited_entries, name):
+	"""
+		helper function that gets value from 
+		['name1', 'name2', 'name3', 'value1', 'value2', 'value3'] for the specified name
+	"""
 	n = len(splited_entries)
 	
 	grupa_index = splited_entries.index(name)
 	grupa = splited_entries[n//2 + grupa_index]
 	
 	return grupa
-	
+
 s = set()
 d = {}
 
+"calculating function of dependecies"
 k = 3
 
-A = 1*k
+A = 1/k
 B = 1
-C = 1/k
+C = 1*k
 
 a = 2*A - 4*B + 2*C
 b = -A + 4*B -3*C
@@ -58,10 +67,10 @@ def score_user(user, score, lesson):
 		lessons[lesson] = 0.5
 	
 	if score:
-		tmp[1] += 1 / f(lessons[lesson])
-		tmp[0] += 1 / f(lessons[lesson])
-	else:
 		tmp[1] += 1 * f(lessons[lesson])
+		tmp[0] += 1 * f(lessons[lesson])
+	else:
+		tmp[1] += 1 / f(lessons[lesson])
 		tmp[0] += 0
 	
 	d[user] = tmp
@@ -91,7 +100,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 			
 			def wrapper(x): 
 				global j, k
-				if "inputParams" in x["logDetails"]:
+				if "inputParams" in x["logDetails"]: # collaborative logs have inputParams
 					isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 					
 					if not isCollaborative: # sve su kolaborativne
@@ -100,7 +109,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 					lesson = x["lesson"]					
 					logEntries = x["logDetails"]["logEntries"]
 				
-					if isinstance(logEntries[0], dict): #498
+					if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
 						members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
 														
 						user_index = members.index(name)
@@ -108,8 +117,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						if user_index != 1: return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 						j+=1
 						
-						for logEntrie in logEntries:
-														
+						for logEntrie in logEntries:														
 							#j += 1
 							problem = logEntrie["problem"]
 							
@@ -134,7 +142,7 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 									print()
 									
 									score_user(name, False, lesson)
-					elif isinstance(logEntries[0], str): #1657
+					elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
 						j += 1
 						
 						split_logEntries = logEntries[0].split(";")
@@ -146,11 +154,12 @@ with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
 						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
 						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
 						
-						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+						# if editorAnswer is empty set it as some random number
+						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer 
 						
 						checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
 						
-						if "?" in problemFormula: 						
+						if "?" in problemFormula: 	# some problems look like 1 + ? = 3
 							solvedProblem = problemFormula.replace('?', editorAnswer)
 							first, second = solvedProblem.split("=")
 															

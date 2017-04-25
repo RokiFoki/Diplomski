@@ -2,6 +2,8 @@ import codecs
 import re 
 import time
 
+""" getting all lessons and storing them in a file """
+
 print("reading started")
 
 start_time = time.time()
