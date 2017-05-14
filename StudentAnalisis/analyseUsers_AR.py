@@ -17,6 +17,9 @@ i = 0
 j = 0
 k = 0
 
+penalty_miliseconds = 2 * 1000
+max_miliseconds = 45 * 1000
+
 display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 lessons = {}
@@ -41,12 +44,13 @@ def fp(x): return k**(1-2*x)
 def fr(x): return x**2
 def ft(x): return (x+1)/2.0
 
-def score_user(user, score, lesson):
+def score_user(user, score, lesson): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
+	# ne moze se samo copy paste
 	global d
 	tmp = d.get(user, [0, 0])
 	
 	score = 1 if score == True else \
-			0 if score == False else \
+			-1 if score == False else \
 			score 
 	
 	if lesson not in lessons: 
@@ -79,25 +83,24 @@ with codecs.open('logs_AR.txt', 'r', "utf-8-sig") as fin:
 		
 		try:		
 			params = eval(JSONParams)
-			#if i == 168: print(); pprint(params)
 			if eventType == "AR.Shapes" and "answers" in params[0]:
 				for question in params:
 				
-					#if i == 168: print(); pprint(question)
 					lesson = question['task']
 					answers = [answer for answer in question["answers"] if int(answer["elapsedSeconds"]) > 1000 or answer["correct"] == 'True']
 					
-					#if i == 168: print(); pprint(answers)
-					def exists(list, condition):
+					def score(answers):
 						try:
 							# return first element thats correct, otherwise 'None'
-							el = next((element for element in list if condition(element)), None)
+							el = next((element for element in answers if element['correct'] == 'True'), None)
 							
-							return el is not None
-						except:
-							return False
+							return el -1 if el is None else 1 - min(int(el["elapsedSeconds"]) + penalty_miliseconds*(len(answers)-1), max_miliseconds)/max_miliseconds 
+							#return el -1 if el is None else 1
+						except Exception as e:
+							print("Exception", e)
+							return -1
 							
-					score_user(name, exists(answers, lambda x: x['correct'] == 'True'), lesson)
+					score_user(name, score(answers), lesson)
 					
 			elif eventType == "AR.Shapes" and "answers" not in params[0]:
 				pprint(params)
@@ -121,16 +124,13 @@ print("prining set (size: {})".format(len(s)))
 for string in s:
 	print(string)
 
-exit()
 	
-with codecs.open('tmp/users/users.txt', "w", 'utf-8-sig') as fout:
-	for lesson in sorted(d.keys()):
-		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
-		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
-		
-		
+with codecs.open('tmp/users/users_AR.txt', "w", 'utf-8-sig') as fout:
+	for user in sorted(d.keys()):
+		print(user, d[user][0], d[user][1], d[user][0]/ d[user][1])
+		fout.write("{}:{}\n".format(user, d[user][0] / d[user][1]))
 
-	
+		
 if display_graph:
 	img_name = "tmp/users/{}.png".format(sys.argv[1]);
 

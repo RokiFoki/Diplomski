@@ -44,22 +44,8 @@ s = set()
 d = {}
 
 "calculating function of dependecies"
+
 """
-k = 3
-
-A = 1/k # f(1) 
-B = 1	# f(0.5)
-C = 1*k # f(0)
-
-a = 2*A - 4*B + 2*C
-b = -A + 4*B -3*C
-c = C
-
-print("a", a, "b", b, "c", c)
-
-def f(x): return a * x**2 + b*x + c
-"""
-
 k=3
 a=k*k
 b=k
@@ -81,7 +67,29 @@ def score_user(user, score, lesson):
 		tmp[0] += 0
 	
 	d[user] = tmp
+"""	
+k=3
+def fp(x): return k**(1-2*x)
+def fr(x): return x**2
+def ft(x): return (x+1)/2.0
 
+def score_user(user, score, lesson): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
+	# ne moze se samo copy paste
+	global d
+	tmp = d.get(user, [0, 0])
+	
+	score = 1 if score == True else \
+			-1 if score == False else \
+			score 
+	
+	if lesson not in lessons: 
+		print("{} not in lessons!".format(lesson))
+		lessons[lesson] = 0.5
+	
+	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score
+	tmp[1] += fr(score) * fp(lessons[lesson])**score
+	
+	d[user] = tmp
 	
 with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 	for line in fin:
