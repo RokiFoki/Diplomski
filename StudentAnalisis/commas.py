@@ -11,8 +11,8 @@ print("reading started")
 start_time = time.time()
 i = 0
 j = 0
-with codecs.open('quotes.txt', 'r', "utf-8-sig") as fin:	
-	with codecs.open('logs.txt', 'w', "utf-8-sig") as fout:		
+with codecs.open('quotes_collaborative.txt', 'r', "utf-8-sig") as fin:	
+	with codecs.open('logs_collaborative.txt', 'w', "utf-8-sig") as fout:		
 		for line in fin:
 			i += 1
 			if time.time() - start_time > 10: 

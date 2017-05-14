@@ -41,7 +41,7 @@ print("query executed")
 
 i = 0
 start_time = time.time()
-with codecs.open('download.txt', 'w', "utf-8-sig") as f:
+with codecs.open('download_collaborative.txt', 'w', "utf-8-sig") as f:
 	for row in cursor:	
 		i += 1
 		if time.time() - start_time > 10: 

@@ -37,6 +37,7 @@ c = 0.5
 """
 
 # ovo samo mijenja skale
+"""
 k = 5
 
 A = 1/k
@@ -50,6 +51,13 @@ c = C
 print(a, b, c)
 
 def f(x): return a * x**2 + b*x + c
+"""
+
+k=3
+a=k*k
+b=k
+def f(x): return b * a**(-x)
+
 print(f(0), f(.5), f(1))
 
 def calculate_fitness(test):
@@ -69,136 +77,132 @@ def calculate_fitness(test):
 	#print(a, b)
 	return a / b
 
+users = False
+if users:
+	test1 = [ # expected 1
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+	]
+	print("{}, {}".format("test1", calculate_fitness(test1)))
 
-test1 = [ # expected 1
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-]
-print("{}, {}".format("test1", calculate_fitness(test1)))
+	test2 = [ # expected 1
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.25, 1],
+	]
+	print("{}, {}".format("test2", calculate_fitness(test2)))
 
-test2 = [ # expected 1
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.25, 1],
-]
-print("{}, {}".format("test2", calculate_fitness(test2)))
+	test3 = [ # expected > 0.8: (a)
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.25, 0],
+	]
+	print("{}, {}".format("test3", calculate_fitness(test3)))
 
-test3 = [ # expected > 0.8: (a)
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.25, 0],
-]
-print("{}, {}".format("test3", calculate_fitness(test3)))
+	test4 = [ # expected > 0.8: (b)	
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 0],
+		[0.25, 1],
+	]
+	print("{}, {}".format("test4", calculate_fitness(test4)))
 
-test4 = [ # expected > 0.8: (b)	
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 0],
-	[0.25, 1],
-]
-print("{}, {}".format("test4", calculate_fitness(test4)))
+	test5 = [ # expected 1	
+		[0.5, 1],
+		[0.25, 1],
+		[0.25, 1],
+		[0.25, 1],
+		[0.25, 1],
+	]
+	print("{}, {}".format("test5", calculate_fitness(test5)))
 
-test5 = [ # expected 1	
-	[0.5, 1],
-	[0.25, 1],
-	[0.25, 1],
-	[0.25, 1],
-	[0.25, 1],
-]
-print("{}, {}".format("test5", calculate_fitness(test5)))
+	test6 = [ # expected > 0.8 && > (b): (c)		
+		[0.5, 0],
+		[0.25, 1],
+		[0.25, 1],
+		[0.25, 1],
+		[0.25, 1],
+	]
+	print("{}, {}".format("test6", calculate_fitness(test6)))
 
-test6 = [ # expected > 0.8 && > (b): (c)		
-	[0.5, 0],
-	[0.25, 1],
-	[0.25, 1],
-	[0.25, 1],
-	[0.25, 1],
-]
-print("{}, {}".format("test6", calculate_fitness(test6)))
+	test7 = [	# expected > 0.8 && > (a): (d)
+		[0.5, 1],
+		[0.25, 0],
+		[0.25, 1],
+		[0.25, 1],
+		[0.25, 1],
+	]
+	print("{}, {}".format("test7", calculate_fitness(test7)))
+	
+else: # lessons
+	test1 = [ # expected 1
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+	]
+	print("{}, {}".format("test1", calculate_fitness(test1)))
 
-test7 = [	# expected > 0.8 && > (a): (d)
-	[0.5, 1],
-	[0.25, 0],
-	[0.25, 1],
-	[0.25, 1],
-	[0.25, 1],
-]
-print("{}, {}".format("test7", calculate_fitness(test7)))
+	test2 = [ # expected 0
+		[0.5, 0],
+		[0.5, 0],
+		[0.5, 0],
+		[0.5, 0],
+		[0.5, 0],
+	]
+	print("{}, {}".format("test2", calculate_fitness(test2)))
 
+	test3 = [ # expected 0.8
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 0],
+	]
+	print("{}, {}".format("test3", calculate_fitness(test3)))
 
+	test4 = [ # expected <0.8
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.75, 0],
+	]
+	print("{}, {}".format("test4", calculate_fitness(test4)))
 
-
-# students
-"""
-test1 = [
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-]
-print("{}, {}".format("test1", calculate_fitness(test1)))
-
-test2 = [
-	[0.5, 0],
-	[0.5, 0],
-	[0.5, 0],
-	[0.5, 0],
-	[0.5, 0],
-]
-print("{}, {}".format("test2", calculate_fitness(test2)))
-
-test3 = [
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 0],
-]
-print("{}, {}".format("test3", calculate_fitness(test3)))
-
-test4 = [	
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.75, 0],
-]
-print("{}, {}".format("test4", calculate_fitness(test4)))
-
-test5 = [	
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 1],
-	[0.5, 0],
-	[0.75, 1],
-]
-print("{}, {}".format("test5", calculate_fitness(test5)))
+	test5 = [ # expected < 0.8
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 1],
+		[0.5, 0],
+		[0.75, 1],
+	]
+	print("{}, {}".format("test5", calculate_fitness(test5)))
 
 
-test6 = [	
-	[0.5, 0],
-	[0.75, 1],
-	[0.75, 1],
-	[0.75, 1],
-	[0.75, 1],
-]
-print("{}, {}".format("test6", calculate_fitness(test6)))
+	test6 = [ # expected < 0.8
+		[0.5, 0],
+		[0.75, 1],
+		[0.75, 1],
+		[0.75, 1],
+		[0.75, 1],
+	]
+	print("{}, {}".format("test6", calculate_fitness(test6)))
 
-test7 = [	
-	[0.5, 1],
-	[0.75, 0],
-	[0.75, 1],
-	[0.75, 1],
-	[0.75, 1],
-]
-print("{}, {}".format("test7", calculate_fitness(test7)))
-"""
+	test7 = [ # expected < 0.8
+		[0.5, 1],
+		[0.75, 0],
+		[0.75, 1],
+		[0.75, 1],
+		[0.75, 1],
+	]
+	print("{}, {}".format("test7", calculate_fitness(test7)))

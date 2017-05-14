@@ -11,7 +11,7 @@ i = 0
 j = 0
 
 s = set()
-with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
+with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 	for line in fin:
 		i += 1	
 		if time.time() - start_time > 10: 
@@ -59,7 +59,7 @@ print(i, j)
 print("reading finished")
 
 print("prining set (size: {})".format(len(s)))
-with codecs.open('groupMembers.txt', "w", 'utf-8-sig') as fout:				
+with codecs.open('groupMembers_collaborative.txt', "w", 'utf-8-sig') as fout:				
 	for string in sorted(s):
 		print(string)
 		fout.write(string+"\n")

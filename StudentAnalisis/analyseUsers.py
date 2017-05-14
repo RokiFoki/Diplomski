@@ -44,11 +44,12 @@ s = set()
 d = {}
 
 "calculating function of dependecies"
+"""
 k = 3
 
-A = 1/k
-B = 1
-C = 1*k
+A = 1/k # f(1) 
+B = 1	# f(0.5)
+C = 1*k # f(0)
 
 a = 2*A - 4*B + 2*C
 b = -A + 4*B -3*C
@@ -57,6 +58,12 @@ c = C
 print("a", a, "b", b, "c", c)
 
 def f(x): return a * x**2 + b*x + c
+"""
+
+k=3
+a=k*k
+b=k
+def f(x): return b * a**(-x)
 
 def score_user(user, score, lesson):
 	global d
@@ -76,7 +83,7 @@ def score_user(user, score, lesson):
 	d[user] = tmp
 
 	
-with codecs.open('logs.txt', 'r', "utf-8-sig") as fin:
+with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 	for line in fin:
 		i += 1	
 		if time.time() - start_time > 10: 

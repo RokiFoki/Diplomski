@@ -15,8 +15,8 @@ i = 0
 i2 = 0
 j = 0
 start_time = time.time()
-with codecs.open('download.txt', 'r', "utf-8-sig") as fin:	
-	with codecs.open('slashes.txt', 'w', "utf-8-sig") as fout:		
+with codecs.open('download_collaborative.txt', 'r', "utf-8-sig") as fin:	
+	with codecs.open('slashes_collaborative.txt', 'w', "utf-8-sig") as fout:		
 		for line in fin:
 			j += 1
 			if time.time() - start_time > 10: 
