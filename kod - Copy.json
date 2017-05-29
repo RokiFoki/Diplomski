@@ -1,0 +1,38 @@
+[
+	{
+		'correctAnswer': '0', 
+		'elapsedSecondsTask': '0', 
+		'task': ''
+	},
+	{
+		'answers': 
+		[
+			
+            {
+				'answer': '0', 
+				'correct': 'True', 
+				'elapsedSeconds': '23146'
+			},
+			(...)
+			{
+				'answer': '10', 
+				'correct': 'True', 
+				'elapsedSeconds': '53120'
+			}
+		],
+		'correctAnswer': '10',
+		'elapsedSecondsTask': '54703',
+		'task': '53 - 43 = ? '
+	},
+	{
+		'answers': 
+		[
+			(...)
+		],
+		'correctAnswer': '33',
+		'elapsedSecondsTask': '0',
+		'task': '90 - 57 = ? '
+	},
+	(...)
+]
+

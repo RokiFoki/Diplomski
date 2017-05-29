@@ -11,7 +11,7 @@ from pprint import pprint
 import os.path
 import matplotlib.pyplot as plt
 
-print("reading started - Users")
+print("reading started - Lessons")
 start_time = time.time() # save time
 i = 0
 j = 0
@@ -24,15 +24,15 @@ normal_miliseconds = 40 * 1000
 """
 display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
-lessons = {}
-lessons_path = "tmp/lessons/lessons_player.txt" # location of lesson weights
-if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
-	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
+users = {}
+users_path = "tmp/users/users_player.txt" # results will be stored on users_path location
+if os.path.isfile(users_path): # if there are saved weights for the lessons, set them as initial weights
+	with codecs.open(users_path, "r", "utf-8-sig") as fin:
 		for line in fin:
 			a, b = line.split(":")
 			a, b = a, float(b)
 			
-			lessons[a] = b
+			users[a] = b
 		
 
 s = set()
@@ -46,26 +46,24 @@ def fp(x): return k**(1-2*x)
 def fr(x): return x**2
 def ft(x): return (x+1)/2.0
 
-def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
+def score_lesson(lesson, score, user, percentage=1): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
 	# ne moze se samo copy paste
 	global d
-	tmp = d.get(user, [0, 0])
+	tmp = d.get(lesson, [0, 0])
 	
 	score = 1 if score == True else \
 			-1 if score == False else \
 			score 
 	
-	if lesson not in lessons: 
-		print("{} not in lessons!".format(lesson))
-		lessons[lesson] = 0.5
+	if user not in users: 
+		print("{} not in user!".format(user))
+		users[user] = 0.5
 	
-	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score * percentage
-	tmp[1] += fr(score) * fp(lessons[lesson])**score
+	tmp[0] += fr(score) * ft(score) * fp(users[user])**score * percentage
+	tmp[1] += fr(score) * fp(users[user])**score
 	
-	d[user] = tmp
+	d[lesson] = tmp
 	
-ma0, ma1, ma2, ma3, ma4, ma5, ma6 = 0, 0, 0, 0, 0, 0, 0	
-
 dict_student_problem = {}
 with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 		for line in fin:
@@ -140,6 +138,7 @@ with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 print(i, j, k)
 print("reading finished")
 
+print("printing set (len:{})".format(len(s)))
 for string in sorted(s):
 	print(string)
 
@@ -148,7 +147,7 @@ for key in dict_student_problem:
 	name, lesson, date = key.split(',')
 	for problem in dict_student_problem[key]:
 		problem = eval(problem)
-		score_user(name, problem["correct"], lesson)
+		score_lesson(lesson, problem["correct"], name)
 	
 	
 with codecs.open('tmp/users/users_player.txt', "w", 'utf-8-sig') as fout:
@@ -158,7 +157,7 @@ with codecs.open('tmp/users/users_player.txt', "w", 'utf-8-sig') as fout:
 
 		
 if display_graph:
-	img_name = "tmp/users/{}_player.png".format(sys.argv[1]);
+	img_name = "tmp/lessons/{}_player.png".format(sys.argv[1]);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)

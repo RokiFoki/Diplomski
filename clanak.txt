@@ -1,0 +1,41 @@
+Naslov: Learning analytics for gamified, augmented reality and collaborative digital mobile lessons
+
+Abstract
+
+Introduction (1 stranica)
+- napisati kasnije (na kraju)
+- Generalna svrha istraživanja
+- podaci o tome gdje kada i kako je napravljeno
+- koje sve metode su se koristile
+- na kraju: konkretno, koja pitanja ćemo odgovoriti i koja je organizaciaj članka
+
+Theoretical background (1,5 stranica - 2 stranice)
+- Malo teorije o augmented, gamified i collaborative (0,5)
+*- Learning analytics (0,5)
+*- Prediction algorithms (0,5)
+
+Methodology
+- Gamified, augmented reality and collaborative experiments (0,5)
+*- Data collection via logs and log processing algorithms(1) 
+*- Student learning success and task difficulty computation algorithms (1)
+*- Prediction algorithms (1)
+
+Data analysis (4)
+Analytics (2)
+- Gamified expaeriments analytics 
+- Augmented reality analytics 
+- Collaborative learning analytics 
+
+Predictions (2)
+- Gamified expaeriments predictions
+- Augmented reality predictions
+- Collaborative learning predictions
+
+Results (1 stranica)
+- Sumarno analytics
+- Sumarno prediction
+
+Conclusion (0,5)
+
+References
+- koristiti Mendeley

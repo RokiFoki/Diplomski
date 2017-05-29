@@ -9,12 +9,13 @@ import sys
 
 import os.path
 import matplotlib.pyplot as plt
+from pprint import pprint
 
 print("reading started - Users")
 start_time = time.time() # save time
 i = 0
 j = 0
-k = 0
+br = 0
 
 display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
@@ -92,11 +93,11 @@ def score_user(user, score, lesson): # bitno, prije je bio if rijesio else nije.
 	d[user] = tmp
 	
 with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
-	for line in fin:
-		i += 1	
+	for i, line in enumerate(fin):
+			
 		if time.time() - start_time > 10: 
 			print("i", i)
-			start_time = time.time()		
+			start_time = time.time()	
 				
 		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
@@ -113,8 +114,12 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 		try:		
 			params = eval(JSONParams)
 			
+			if 400 < len(JSONParams) < 700:
+				pprint(params)
+				exit()
+				
 			def wrapper(x): 
-				global j, k
+				global j, br
 				if "inputParams" in x["logDetails"]: # collaborative logs have inputParams
 					isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 					
@@ -123,13 +128,36 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 					
 					lesson = x["lesson"]					
 					logEntries = x["logDetails"]["logEntries"]
+					if len(logEntries) == 0: return
 				
 					if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
-						members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
-														
-						user_index = members.index(name)
+						try:
+							if ":" not in x["logDetails"]["inputParams"]["groupMembers"][0]:
+								# [' Ime Prezime', ' Ime2 Prezime2']
+								members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
+								user_index = members.index(name)
+								
+								if len(members) == 2:
+									role = 'E' if user_index == 0 else 'C'
+								else:
+									role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
+							else:
+								# ['E: Ime Prezime', 'C: Ime2 Prezime2']
+								members = [a.split(":")[1].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]	
+								roles = [a.split(":")[0].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
 							
-						if user_index != 1: return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+								user_index = members.index(name)
+								role = roles[user_index]
+								
+						except ValueError:
+							# happened once, name = 'Učiteljica (zamjenski tablet)', members = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
+							
+							print(i, "PROBLEM:", name, 'is not in', members)
+							br += 1
+							return
+						
+							
+						if role != 'E': return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 						j+=1
 						
 						for logEntrie in logEntries:														
@@ -158,21 +186,54 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 									
 									score_user(name, False, lesson)
 					elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
-						j += 1
-						
+						j += 1						
 						split_logEntries = logEntries[0].split(";")
 						
 						grupa = get_entries_element(split_logEntries, "Grupa")
-						split_grupa = [a.strip() for a in grupa.split(",")]
-						user_index = split_grupa.index(name)
+						
+						try:
+							if ":" not in grupa:
+								# "Ime Prezime, ime2 prezime2,..."
+								split_grupa = [a.strip() for a in grupa.split(",")]
+								user_index = split_grupa.index(name)
+								
+								if len(split_grupa) == 2:
+									role = 'E' if user_index == 0 else 'C'
+								else:
+									role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
+							else:
+								# "E: Ime prezime, C: Ime2 prezime2"
+								split_grupa = [a.split(":")[1].strip() for a in grupa.split(",")]
+								roles = [a.split(":")[0].strip() for a in grupa.split(",")]
+								
+								user_index = split_grupa.index(name)
+								role = roles[user_index]
+						except ValueError:
+							# happened once, name = 'Učiteljica (zamjenski tablet)', split_grupa = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
+							
+							print(i, "PROBLEM:", name, 'is not in', split_grupa)
+							br += 1
+							return
+							
+							
 						
 						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
-						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
 						
-						# if editorAnswer is empty set it as some random number
+						editorAnswerCorrect = None
+						try:
+							editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
+							# if editorAnswer is empty set it as some random number
+							
+						except ValueError:
+							editorAnswer = get_entries_element(split_logEntries, "GivenAnswerCalculation").strip()
+						
 						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer 
-						
-						checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
+							
+						try:
+							checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
+						except ValueError:
+							# if there is no entry for checker, that means
+							checkerAnswer = "Ok"
 						
 						if "?" in problemFormula: 	# some problems look like 1 + ? = 3
 							solvedProblem = problemFormula.replace('?', editorAnswer)
@@ -181,18 +242,21 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 							first = eval(first.replace('·', '*').replace(':', '/'))
 							second = eval(second)
 							
-							if user_index == 0: #editor
+							if role == 'E': #editor
 								score_user(name, first == second, lesson)
-							else: #checker ZERO TIMES!!!!!!!!!
+							elif role == 'C': #checker ZERO TIMES!!!!!!!!!
 								score_user(name, first == second if checkerAnswer=="Ok" else first != second, lesson)
 						else:
-							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
+							try:
+								authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
+							except ValueError:
+								authorAnswer = get_entries_element(split_logEntries, "GivenAnswerFormula")
 							
 							first, second = problemFormula.split("=")
 														
-							if user_index == 0: # author zero times
+							if role == 'A': # author zero times
 								score_user(name, authorAnswer == first, lesson)
-							elif user_index == 1: # editor 528 times
+							elif role == 'E': # editor 528 times
 								good = True
 								try:
 									authorA = eval(authorAnswer)
@@ -204,13 +268,12 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 										score_user(name, authorA == eval(editorAnswer), lesson)
 									except:
 										score_user(name, False, lesson)
-							else: # checker ZERO times
-								k += 1
+							elif role == 'C': # checker ZERO times (not anymore??)
 								good = (authorAnswer == first and editorAnswer == second)
 								
 								checkerGood = checkerAnswer == "Ok"
-
-								score_user(name, checkerAnswer == good. lesson)
+								
+								score_user(name, checkerAnswer == good, lesson)
 								
 								
 							# for inx in range(len(split_logEntries) // 2):
@@ -229,6 +292,9 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 				
 		except Exception as e:
 			print("PROBLEM OCCURED", i, e)
+			import traceback
+			traceback.print_exc()
+			
 			print(line)
 			exit()
 			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
@@ -238,7 +304,7 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 			
 		
 			
-print(i, j, k)
+print(i, j, k, br)
 print("reading finished")
 
 with codecs.open('tmp/users/users.txt', "w", 'utf-8-sig') as fout:

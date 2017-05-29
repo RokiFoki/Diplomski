@@ -1,10 +1,48 @@
-import re 
+import codecs
+import time
+import re
 
-line = """('Luka', 40922, 'widget_log', 'Player', datetime.datetime(2016, 3, 25, 15, 45, 51, 167000), '{"lesson":"89","logDetails":"[{\\"rbrZapis\\":1,\\"problem\\":{\\"rbrZadatak\\":1,\\"zadatak\\":{\\"b1\\":19,\\"b2\\":10,\\"op\\":\\"-\\"},\\"rjesenje\\":\\"9\\",\\"tocno\\":True,\\"endTime\\":1458920735074,\\"startTime\\":1458920725060},\\"vrijeme\\":10014},{\\"rbrZapis\\":2,\\"problem\\":{\\"rbrZadatak\\":2,\\"zadatak\\":{\\"b1\\":13,\\"b2\\":1,\\"op\\":\\"+\\"},\\"rjesenje\\":\\"14\\",\\"tocno\\":True,\\"endTime\\":1458920739354,\\"startTime\\":1458920736577},\\"vrijeme\\":2777},{\\"rbrZapis\\":3,\\"problem\\":{\\"rbrZadatak\\":3,\\"zadatak\\":{\\"b1\\":13,\\"b2\\":1,\\"op\\":\\"-\\"},\\"rjesenje\\":\\"12\\",\\"tocno\\":True,\\"endTime\\":1458920742866,\\"startTime\\":1458920740856},\\"vrijeme\\":2010},{\\"rbrZapis\\":4,\\"problem\\":{\\"rbrZadatak\\":4,\\"zadatak\\":{\\"b1\\":16,\\"b2\\":15,\\"op\\":\\"-\\"},\\"rjesenje\\":\\"2\\",\\"tocno\\":False,\\"endTime\\":1458920745291,\\"startTime\\":1458920744367},\\"vrijeme\\":924},{\\"rbrZapis\\":5,\\"problem\\":{\\"rbrZadatak\\":4,\\"zadatak\\":{\\"b1\\":16,\\"b2\\":15,\\"op\\":\\"-\\"},\\"rjesenje\\":\\"1\\",\\"tocno\\":True,\\"endTime\\":1458920746890,\\"startTime\\":1458920745291},\\"vrijeme\\":1599},{\\"rbrZapis\\":6,\\"problem\\":{\\"rbrZadatak\\":5,\\"zadatak\\":{\\"b1\\":2,\\"b2\\":4,\\"op\\":\\"+\\"},\\"rjesenje\\":\\"5\\",\\"tocno\\":False,\\"endTime\\":1458920749715,\\"startTime\\":1458920748392},\\"vrijeme\\":1323},{\\"rbrZapis\\":7,\\"problem\\":{\\"rbrZadatak\\":5,\\"zadatak\\":{\\"b1\\":2,\\"b2\\":4,\\"op\\":\\"+\\"},\\"rjesenje\\":\\"6\\",\\"tocno\\":True,\\"endTime\\":1458920751162,\\"startTime\\":1458920749716},\\"vrijeme\\":1446}]"}', 880433)"""
+d = dict()
 
-
-"""('AZER BESIC', 234540, 'AR.Shapes Log', 'AR.Shapes', datetime.datetime(2017, 3, 3, 11, 6, 41, 350000), '[ {"task":"Tko od osoba ciji su portreti u razredu je autor opere?", "correctAnswer":"LISINSKI", "elapsedSecondsTask":"58943", "answers":[ {"elapsedSeconds":"54799", "answer":"3", "correct":"True"} ]}, {"task":"Koji poznati pisac je pisao iskljucivo na hrvatskom jeziku?", "correctAnswer":"SENOA", "elapsedSecondsTask":"28731", "answers":[ {"elapsedSeconds":"0", "answer":"3", "correct":"False"}, {"elapsedSeconds":"6938", "answer":"7", "correct":"False"}, {"elapsedSeconds":"9496", "answer":"4", "correct":"False"}, {"elapsedSeconds":"23965", "answer":"2", "correct":"False"}, {"elapsedSeconds":"26240", "answer":"5", "correct":"True"} ]}, {"task":"Po kome je Maksimir dobio ime?", "correctAnswer":"VRHOVAC", "elapsedSecondsTask":"40047", "answers":[ {"elapsedSeconds":"0", "answer":"5", "correct":"False"}, {"elapsedSeconds":"36779", "answer":"6", "correct":"True"} ]}, {"task":"\"Lijepu našu\" je napisao?", "correctAnswer":"MIHANOVIC", "elapsedSecondsTask":"22187", "answers":[ {"elapsedSeconds":"0", "answer":"6", "correct":"False"}, {"elapsedSeconds":"21091", "answer":"4", "correct":"True"} ]}, {"task":"Po kome je nazvana obližnja koncertna dvorana?", "correctAnswer":"LISINSKI", "elapsedSecondsTask":"7216", "answers":[ {"elapsedSeconds":"0", "answer":"4", "correct":"False"}, {"elapsedSeconds":"5946", "answer":"3", "correct":"True"} ]} ]', 3130801)"""
-
-m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
-name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+start_time = time.time()
+with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
+	for i, line in enumerate(fin):
+		if time.time() - start_time > 10:
+			print("i", i)
+			start_time = time.time()
 			
+		
+		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)
+		
+		try:			
+			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+			
+			name = name.strip()
+				
+		except:
+			print("cant parse:")
+			print(line)
+			break
+			
+		#params = eval(JSONParams)
+		
+		if "A:" in JSONParams or "E:" in JSONParams or "C:" in JSONParams:
+			try:
+				m = re.search(".*(\[.*;[^]]*\]).*", JSONParams)
+			
+				upitno = m.group(1)
+				upitno2 = upitno[2:-2].split(";")
+				
+				n = len(upitno2)
+				upitno2 = upitno2[0: n//2]
+				
+				
+				d[str(upitno2)] = upitno
+			except AttributeError:
+				pass
+				
+				
+print("prining dict (size: {})".format(len(d)))
+for key in d:
+	print(key, d[key])
+	print()

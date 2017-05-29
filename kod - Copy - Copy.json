@@ -1,0 +1,46 @@
+{
+	'lesson': '290',
+	'logDetails': 
+	{
+		'inputParams': 
+		{
+			'brojPonavljanja': '10',
+			'groupMembers': 
+			[
+				'NAME SURNAME', 
+				'NAME2 SURNAME2'
+			],
+			'isAdaptive': False,
+            'isCollaborative': True,
+            'lesson': '36+4_30-5',
+            'title': 'Matematika za 1. razred',
+            'difficultRate': '2'
+		},
+        'logEntries': 
+		[
+			{
+				'problem': 
+				{
+					'confirmSolution': None,
+					'correct': True,
+					'firstPart': '41+7=',
+					'problemNumber': 10,
+                    'secondPart': '48',
+                    'startTime': 1480576673805,
+                    'thirdPart': '',
+                    'unknown': 'secondPart'
+				},
+                'problemIndex': 1,
+                'time': None
+			}
+			(...)
+		],
+		'result': 
+		{
+			'duration': None, 
+			'score': 1
+		}
+	},
+	'widget': '1256'
+}
+

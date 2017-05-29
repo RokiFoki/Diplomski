@@ -83,6 +83,12 @@ with codecs.open('logs_AR.txt', 'r', "utf-8-sig") as fin:
 		
 		try:		
 			params = eval(JSONParams)
+			if 500 < len(JSONParams) < 1000 and eventType == "AR.Math":
+				print()
+				pprint(params)
+				print(len(JSONParams))
+				exit()
+			
 			if eventType == "AR.Shapes" and "answers" in params[0]:
 				for question in params:
 				

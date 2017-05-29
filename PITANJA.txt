@@ -70,3 +70,4 @@ bar ne preko contextualInfo, 0 puta se dogodilo da je contextualInfo bio netko t
 _------------------------------------------
 
 vidi li editor (checker) -> pocetni problem
+da

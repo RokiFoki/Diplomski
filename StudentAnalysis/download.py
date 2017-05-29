@@ -13,7 +13,7 @@ import time
 IP = '161.53.18.12:1955'
 username = 'roko'
 password = 'g546z6rhtf'
-DBname='ExperientialSamplingAnalyticsDev'
+DBname='ExperientialSamplingAnalyticsDev2'
 
 conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
 print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
@@ -32,7 +32,8 @@ AND (
 	(ContextualInfo.Time BETWEEN '01/18/2017' and '01/18/2017 23:59:59') OR 
 	(ContextualInfo.Time BETWEEN '01/19/2017' and '01/19/2017 23:59:59') OR 
 	(ContextualInfo.Time BETWEEN '02/22/2017' and '02/22/2017 23:59:59') OR 
-	(ContextualInfo.Time BETWEEN '03/24/2017' and '03/24/2017 23:59:59') 
+	(ContextualInfo.Time BETWEEN '03/24/2017' and '03/24/2017 23:59:59') OR
+	(ContextualInfo.Time >= Convert(datetime, '2017-03-24' ))
 )
 '''
 print("executing query ({})".format(query))

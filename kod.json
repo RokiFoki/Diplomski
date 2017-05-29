@@ -1,0 +1,41 @@
+{
+	'lesson': 108,
+	'logDetails': 
+	{
+		'inputParams': 
+		{
+			'repetitionTime': '5',
+			'lesson': 'zagrade',
+			'title': 'Matematika za 1. razred',
+			'difficultRate': '2'
+		},
+		'logEntries': 
+		[
+			{
+				'problem': 
+				{
+					'correct': True,
+					'endTime': 1462488488047,
+					'firstPart': '4+4+4+4+4+4=',
+					'problemNumber': 1,
+					'secondPart': '24',
+					'startTime': 1462488477809,
+					'thirdPart': '',
+					'unknown': 'secondPart'
+				},
+				'problemIndex': 1,
+				'time': 10238
+			},
+			{
+				'problem': 
+				{
+					(...)
+				},
+			}
+			(...)
+		]
+	},
+	'widget': '1019'
+}
+
+

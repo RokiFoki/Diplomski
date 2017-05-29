@@ -9,9 +9,8 @@ import sys
 from pprint import pprint
 
 import os.path
-import matplotlib.pyplot as plt
 
-print("reading started - Users")
+print("reading started")
 start_time = time.time() # save time
 i = 0
 j = 0
@@ -21,11 +20,10 @@ penalty_miliseconds = 2 * 1000
 max_miliseconds = 120 * 1000
 normal_miliseconds = 40 * 1000
 
-"""
 display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 lessons = {}
-lessons_path = "tmp/lessons/lessons_player.txt" # location of lesson weights
+lessons_path = "tmp/lessons/lessons_AR.txt" # location of lesson weights
 if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -34,7 +32,7 @@ if os.path.isfile(lessons_path): # if there are saved weights for the lessons us
 			
 			lessons[a] = b
 		
-
+"""
 s = set()
 d = {}
 
@@ -64,10 +62,8 @@ def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rije
 	
 	d[user] = tmp
 	
-ma0, ma1, ma2, ma3, ma4, ma5, ma6 = 0, 0, 0, 0, 0, 0, 0	
-
-dict_student_problem = {}
-with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
+with codecs.open('logs_player.txt', 'r', "utf-8-sig") as fin:
+	with codecs.open('logs_player_filtered.txt', 'w', "utf-8-sig") as fout:
 		for line in fin:
 			i += 1	
 			if time.time() - start_time > 10: 
@@ -80,25 +76,16 @@ with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 				name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 				
 				name = name.strip()
-				
-				year, month, day, hour, min, sec, ms = [int(item) for item in datetime.split(', ')]
-				
-				datetime = "{} {} {}".format(year, month, day)
-				
-				key = "{},{}".format(name, datetime)
-				
+					
 			except:
-				import traceback
 				print("cant parse:")
 				print(line)
-				traceback.print_exc()
 				break
 			
 			try:	
 				params = eval(JSONParams)
 				
 				lesson = params["lesson"]
-				key = "{},{},{}".format(name, lesson, datetime)
 				if isinstance(params["logDetails"], list):
 					continue
 						
@@ -113,13 +100,11 @@ with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 							for logEntry in  logDetails["logEntries"]:
 								if "problem" in logEntry:
 									if "confirmSolution" not in logEntry["problem"] and "needToDiscuss" not in logEntry["problem"] and "waitingForChecker" not in logEntry["problem"]:
-										problems = dict_student_problem.get(key, set())
-										problems.add(str(logEntry["problem"]))
-										dict_student_problem[key] = problems
+										fout.write(line)
+										j+=1
 						else:
-							problems = dict_student_problem.get(key, set())
-							problems.add(str(logEntry["problem"]))
-							dict_student_problem[key] = problems
+							fout.write(line)
+							j+=1
 					
 				
 					
@@ -140,26 +125,6 @@ with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 print(i, j, k)
 print("reading finished")
 
+print("prining set (size: {})".format(len(s)))
 for string in sorted(s):
 	print(string)
-
-print(len(dict_student_problem.keys()))
-for key in dict_student_problem:
-	name, lesson, date = key.split(',')
-	for problem in dict_student_problem[key]:
-		problem = eval(problem)
-		score_user(name, problem["correct"], lesson)
-	
-	
-with codecs.open('tmp/users/users_player.txt', "w", 'utf-8-sig') as fout:
-	for user in sorted(d.keys()):
-		print(user, d[user][0], d[user][1], d[user][0]/ d[user][1])
-		fout.write("{}:{}\n".format(user, d[user][0] / d[user][1]))
-
-		
-if display_graph:
-	img_name = "tmp/users/{}_player.png".format(sys.argv[1]);
-
-	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
-	plt.savefig(img_name)
-	print("saved {}".format(img_name))
