@@ -46,36 +46,12 @@ d = {}
 
 "calculating function of dependecies"
 
-"""
-k=3
-a=k*k
-b=k
-def f(x): return b * a**(-x)
-
-def score_user(user, score, lesson):
-	global d
-	tmp = d.get(user, [0, 0])
-	
-	if lesson not in lessons: 
-		print("{} not in lessons!".format(lesson))
-		lessons[lesson] = 0.5
-	
-	if score:
-		tmp[1] += 1 * f(lessons[lesson])
-		tmp[0] += 1 * f(lessons[lesson])
-	else:
-		tmp[1] += 1 / f(lessons[lesson])
-		tmp[0] += 0
-	
-	d[user] = tmp
-"""	
 k=3
 def fp(x): return k**(1-2*x)
 def fr(x): return x**2
 def ft(x): return (x+1)/2.0
 
-def score_user(user, score, lesson): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
-	# ne moze se samo copy paste
+def score_user(user, score, lesson): 
 	global d
 	tmp = d.get(user, [0, 0])
 	
@@ -113,182 +89,176 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 		
 		try:		
 			params = eval(JSONParams)
+			x = params
 			
-			if 400 < len(JSONParams) < 700:
-				pprint(params)
-				exit()
+			if "inputParams" in x["logDetails"]: # collaborative logs have inputParams
+				isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 				
-			def wrapper(x): 
-				global j, br
-				if "inputParams" in x["logDetails"]: # collaborative logs have inputParams
-					isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
-					
-					if not isCollaborative: # sve su kolaborativne
+				if not isCollaborative: # sve su kolaborativne
+					return
+				
+				lesson = x["lesson"]					
+				logEntries = x["logDetails"]["logEntries"]
+				if len(logEntries) == 0: return
+			
+				if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
+					try:
+						if ":" not in x["logDetails"]["inputParams"]["groupMembers"][0]:
+							# [' Ime Prezime', ' Ime2 Prezime2']
+							members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
+							user_index = members.index(name)
+							
+							if len(members) == 2:
+								role = 'E' if user_index == 0 else 'C'
+							else:
+								role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
+						else:
+							# ['E: Ime Prezime', 'C: Ime2 Prezime2']
+							members = [a.split(":")[1].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]	
+							roles = [a.split(":")[0].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
+						
+							user_index = members.index(name)
+							role = roles[user_index]
+							
+					except ValueError:
+						# happened once, name = 'Učiteljica (zamjenski tablet)', members = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
+						
+						print(i, "PROBLEM:", name, 'is not in', members)
+						br += 1
 						return
 					
-					lesson = x["lesson"]					
-					logEntries = x["logDetails"]["logEntries"]
-					if len(logEntries) == 0: return
-				
-					if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
-						try:
-							if ":" not in x["logDetails"]["inputParams"]["groupMembers"][0]:
-								# [' Ime Prezime', ' Ime2 Prezime2']
-								members = [a.strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
-								user_index = members.index(name)
-								
-								if len(members) == 2:
-									role = 'E' if user_index == 0 else 'C'
-								else:
-									role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
-							else:
-								# ['E: Ime Prezime', 'C: Ime2 Prezime2']
-								members = [a.split(":")[1].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]	
-								roles = [a.split(":")[0].strip() for a in x["logDetails"]["inputParams"]["groupMembers"]]
-							
-								user_index = members.index(name)
-								role = roles[user_index]
-								
-						except ValueError:
-							# happened once, name = 'Učiteljica (zamjenski tablet)', members = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
-							
-							print(i, "PROBLEM:", name, 'is not in', members)
-							br += 1
-							return
 						
-							
-						if role != 'E': return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
-						j+=1
+					if role != 'E': return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+					j+=1
+					
+					for logEntrie in logEntries:														
+						#j += 1
+						problem = logEntrie["problem"]
 						
-						for logEntrie in logEntries:														
-							#j += 1
-							problem = logEntrie["problem"]
-							
-							if "correct" in problem and problem["correct"] is not None:
-								score_user(name, problem["correct"], lesson)
-							else:
-								if "fourthPart" in problem:
-									string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]+"="+problem["fourthPart"]
-								else:
-									string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]
-							
-								first, second = string.replace(":", "/").replace("·", "*").split("=")
-								
-								try:
-									first = eval(first)
-									second = eval(second)
-									
-									score_user(name, first == second, lesson)
-								except:
-									print(problem, problem["correct"] if "correct" in problem else  "??")
-									print(string)
-									print()
-									
-									score_user(name, False, lesson)
-					elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
-						j += 1						
-						split_logEntries = logEntries[0].split(";")
-						
-						grupa = get_entries_element(split_logEntries, "Grupa")
-						
-						try:
-							if ":" not in grupa:
-								# "Ime Prezime, ime2 prezime2,..."
-								split_grupa = [a.strip() for a in grupa.split(",")]
-								user_index = split_grupa.index(name)
-								
-								if len(split_grupa) == 2:
-									role = 'E' if user_index == 0 else 'C'
-								else:
-									role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
-							else:
-								# "E: Ime prezime, C: Ime2 prezime2"
-								split_grupa = [a.split(":")[1].strip() for a in grupa.split(",")]
-								roles = [a.split(":")[0].strip() for a in grupa.split(",")]
-								
-								user_index = split_grupa.index(name)
-								role = roles[user_index]
-						except ValueError:
-							# happened once, name = 'Učiteljica (zamjenski tablet)', split_grupa = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
-							
-							print(i, "PROBLEM:", name, 'is not in', split_grupa)
-							br += 1
-							return
-							
-							
-						
-						problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
-						
-						editorAnswerCorrect = None
-						try:
-							editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
-							# if editorAnswer is empty set it as some random number
-							
-						except ValueError:
-							editorAnswer = get_entries_element(split_logEntries, "GivenAnswerCalculation").strip()
-						
-						editorAnswer = "-100000" if editorAnswer == '' else editorAnswer 
-							
-						try:
-							checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
-						except ValueError:
-							# if there is no entry for checker, that means
-							checkerAnswer = "Ok"
-						
-						if "?" in problemFormula: 	# some problems look like 1 + ? = 3
-							solvedProblem = problemFormula.replace('?', editorAnswer)
-							first, second = solvedProblem.split("=")
-															
-							first = eval(first.replace('·', '*').replace(':', '/'))
-							second = eval(second)
-							
-							if role == 'E': #editor
-								score_user(name, first == second, lesson)
-							elif role == 'C': #checker ZERO TIMES!!!!!!!!!
-								score_user(name, first == second if checkerAnswer=="Ok" else first != second, lesson)
+						if "correct" in problem and problem["correct"] is not None:
+							score_user(name, problem["correct"], lesson)
 						else:
+							if "fourthPart" in problem:
+								string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]+"="+problem["fourthPart"]
+							else:
+								string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]
+						
+							first, second = string.replace(":", "/").replace("·", "*").split("=")
+							
 							try:
-								authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
-							except ValueError:
-								authorAnswer = get_entries_element(split_logEntries, "GivenAnswerFormula")
+								first = eval(first)
+								second = eval(second)
+								
+								score_user(name, first == second, lesson)
+							except:
+								print(problem, problem["correct"] if "correct" in problem else  "??")
+								print(string)
+								print()
+								
+								score_user(name, False, lesson)
+				elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
+					j += 1						
+					split_logEntries = logEntries[0].split(";")
+					
+					grupa = get_entries_element(split_logEntries, "Grupa")
+					
+					try:
+						if ":" not in grupa:
+							# "Ime Prezime, ime2 prezime2,..."
+							split_grupa = [a.strip() for a in grupa.split(",")]
+							user_index = split_grupa.index(name)
 							
-							first, second = problemFormula.split("=")
+							if len(split_grupa) == 2:
+								role = 'E' if user_index == 0 else 'C'
+							else:
+								role = 'A' if user_index == 0 else 'C' if user_index == 1 else 'E'
+						else:
+							# "E: Ime prezime, C: Ime2 prezime2"
+							split_grupa = [a.split(":")[1].strip() for a in grupa.split(",")]
+							roles = [a.split(":")[0].strip() for a in grupa.split(",")]
+							
+							user_index = split_grupa.index(name)
+							role = roles[user_index]
+					except ValueError:
+						# happened once, name = 'Učiteljica (zamjenski tablet)', split_grupa = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
+						
+						print(i, "PROBLEM:", name, 'is not in', split_grupa)
+						br += 1
+						return
+						
+						
+					
+					problemFormula = get_entries_element(split_logEntries, "ProblemFormula")
+					
+					editorAnswerCorrect = None
+					try:
+						editorAnswer = get_entries_element(split_logEntries, "EditorAnswer")
+						# if editorAnswer is empty set it as some random number
+						
+					except ValueError:
+						editorAnswer = get_entries_element(split_logEntries, "GivenAnswerCalculation").strip()
+					
+					editorAnswer = "-100000" if editorAnswer == '' else editorAnswer 
+						
+					try:
+						checkerAnswer = get_entries_element(split_logEntries, "CheckerAnswer")
+					except ValueError:
+						# if there is no entry for checker, that means
+						checkerAnswer = "Ok"
+					
+					if "?" in problemFormula: 	# some problems look like 1 + ? = 3
+						solvedProblem = problemFormula.replace('?', editorAnswer)
+						first, second = solvedProblem.split("=")
 														
-							if role == 'A': # author zero times
-								score_user(name, authorAnswer == first, lesson)
-							elif role == 'E': # editor 528 times
-								good = True
-								try:
-									authorA = eval(authorAnswer)
-								except:
-									good = False;
-								
-								if good:
-									try:
-										score_user(name, authorA == eval(editorAnswer), lesson)
-									except:
-										score_user(name, False, lesson)
-							elif role == 'C': # checker ZERO times (not anymore??)
-								good = (authorAnswer == first and editorAnswer == second)
-								
-								checkerGood = checkerAnswer == "Ok"
-								
-								score_user(name, checkerAnswer == good, lesson)
-								
-								
-							# for inx in range(len(split_logEntries) // 2):
-								# s.add(split_logEntries[inx])
-								
-							
+						first = eval(first.replace('·', '*').replace(':', '/'))
+						second = eval(second)
+						
+						if role == 'E': #editor
+							score_user(name, first == second, lesson)
+						elif role == 'C': #checker ZERO TIMES!!!!!!!!!
+							score_user(name, first == second if checkerAnswer=="Ok" else first != second, lesson)
 					else:
-						# nikad se ne dogodi
-						print(logEntries)
+						try:
+							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
+						except ValueError:
+							authorAnswer = get_entries_element(split_logEntries, "GivenAnswerFormula")
+						
+						first, second = problemFormula.split("=")
+													
+						if role == 'A': # author zero times
+							score_user(name, authorAnswer == first, lesson)
+						elif role == 'E': # editor 528 times
+							good = True
+							try:
+								authorA = eval(authorAnswer)
+							except:
+								good = False;
+							
+							if good:
+								try:
+									score_user(name, authorA == eval(editorAnswer), lesson)
+								except:
+									score_user(name, False, lesson)
+						elif role == 'C': # checker ZERO times (not anymore??)
+							good = (authorAnswer == first and editorAnswer == second)
+							
+							checkerGood = checkerAnswer == "Ok"
+							
+							score_user(name, checkerAnswer == good, lesson)
+							
+							
+						# for inx in range(len(split_logEntries) // 2):
+							# s.add(split_logEntries[inx])
+							
+						
 				else:
-					# ima ih 2
-					# data
-					pass
-					# TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
-			wrapper(params)
+					# nikad se ne dogodi
+					print(logEntries)
+			else:
+				# ima ih 2
+				# data
+				pass
+				# TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 				
 		except Exception as e:
 			print("PROBLEM OCCURED", i, e)
