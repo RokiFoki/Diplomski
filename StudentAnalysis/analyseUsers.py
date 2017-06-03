@@ -11,16 +11,27 @@ import os.path
 import matplotlib.pyplot as plt
 from pprint import pprint
 
+from utils import get_file_name_from_dates
+from datetime import datetime
+import argparse
+
+parser = argparse.ArgumentParser(description="?????.")
+
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+parser.add_argument('-i', help="image file name", type=str, metavar="IMG")
+parser.add_argument('-r', help="results file name", type=str, default="users.txt", metavar="rFile")
+parser.add_argument('-d', help="lesson info file name", type=str, default="lessons.txt", metavar="dFile")
+
+args = parser.parse_args()
+dates = args.date
+
 print("reading started - Users")
 start_time = time.time() # save time
 i = 0
 j = 0
-br = 0
-
-display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 lessons = {}
-lessons_path = "tmp/lessons/lessons.txt" # location of lesson weights
+lessons_path = "tmp/lessons/{}".format(args.d) # location of lesson weights
 if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -51,7 +62,7 @@ def fp(x): return k**(1-2*x)
 def fr(x): return x**2
 def ft(x): return (x+1)/2.0
 
-def score_user(user, score, lesson): 
+def score_user(user, score, lesson, percentage=1): 
 	global d
 	tmp = d.get(user, [0, 0])
 	
@@ -63,12 +74,13 @@ def score_user(user, score, lesson):
 		print("{} not in lessons!".format(lesson))
 		lessons[lesson] = 0.5
 	
-	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score
+	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score * percentage
 	tmp[1] += fr(score) * fp(lessons[lesson])**score
 	
 	d[user] = tmp
+
 	
-with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
+with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "utf-8-sig") as fin:
 	for i, line in enumerate(fin):
 			
 		if time.time() - start_time > 10: 
@@ -95,11 +107,11 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 				isCollaborative = x["logDetails"]["inputParams"]["isCollaborative"]
 				
 				if not isCollaborative: # sve su kolaborativne
-					return
+					continue
 				
 				lesson = x["lesson"]					
 				logEntries = x["logDetails"]["logEntries"]
-				if len(logEntries) == 0: return
+				if len(logEntries) == 0: continue
 			
 				if isinstance(logEntries[0], dict): #there are 498 of them -> big logs
 					try:
@@ -125,10 +137,10 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 						
 						print(i, "PROBLEM:", name, 'is not in', members)
 						br += 1
-						return
+						continue
 					
 						
-					if role != 'E': return # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
+					if role != 'E': continue # TOOOOOOOOOOOOOOOOOOODOOOOOOOOOOOOOOOO
 					j+=1
 					
 					for logEntrie in logEntries:														
@@ -184,7 +196,7 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 						
 						print(i, "PROBLEM:", name, 'is not in', split_grupa)
 						br += 1
-						return
+						continue
 						
 						
 					
@@ -223,8 +235,13 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 						except ValueError:
 							authorAnswer = get_entries_element(split_logEntries, "GivenAnswerFormula")
 						
-						first, second = problemFormula.split("=")
-													
+						if "=" in problemFormula:
+							first, second = problemFormula.split("=")
+						else:
+							first = problemFormula
+						
+						first = first.replace('·', '*').replace(':', '/')
+						
 						if role == 'A': # author zero times
 							score_user(name, authorAnswer == first, lesson)
 						elif role == 'E': # editor 528 times
@@ -240,7 +257,7 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 								except:
 									score_user(name, False, lesson)
 						elif role == 'C': # checker ZERO times (not anymore??)
-							good = (authorAnswer == first and editorAnswer == second)
+							good = (authorAnswer == first and editorAnswer == eval(first))
 							
 							checkerGood = checkerAnswer == "Ok"
 							
@@ -274,10 +291,10 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 			
 		
 			
-print(i, j, k, br)
+print(i, j)
 print("reading finished")
 
-with codecs.open('tmp/users/users.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/users/{}'.format(args.r), "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
 		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
@@ -287,8 +304,8 @@ print("prining set (size: {})".format(len(s)))
 for string in s:
 	print(string)
 	
-if display_graph:
-	img_name = "tmp/users/{}.png".format(sys.argv[1]);
+if args.i:
+	img_name = "tmp/users/{}".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)

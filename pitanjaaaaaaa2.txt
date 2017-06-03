@@ -1,0 +1,467 @@
+dict_keys(['inputParams', 'logEntries', 'result'])
+{'inputParams': {'brojPonavljanja': 3,
+                 'lekcija': 'zagrade',
+                 'naslov': 'Vježba',
+                 'tezina': 3},
+ 'logEntries': [{'problem': {'correct': None,
+                             'endTime': 1464896125323,
+                             'firstPart': '(19-15)·6=',
+                             'needToDiscuss': True,
+                             'problemNumber': 3,
+                             'secondPart': '8',
+                             'startTime': 1464896119604,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 1,
+                 'vrijeme': 5719},
+                {'problem': {'correct': None,
+                             'endTime': 1464896134532,
+                             'firstPart': '(19-15)·6=',
+                             'needToDiscuss': True,
+                             'problemNumber': 3,
+                             'secondPart': '89',
+                             'startTime': 1464896119604,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 2,
+                 'vrijeme': 14928},
+                {'problem': {'correct': True,
+                             'endTime': 1464896145400,
+                             'firstPart': '(19-15)·6=',
+                             'needToDiscuss': True,
+                             'problemNumber': 3,
+                             'secondPart': '24',
+                             'startTime': 1464896119604,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 3,
+                 'vrijeme': 25796}],
+ 'result': {'duration': 25796, 'score': 0.3333333333333333}}
+ I OVO
+ {
+    "inputParams": {
+        "instructions": "Ova igra nas uci prepoznavati oblike. Zadatke rješavamo tako da kliknemo na tocnu sliku.",
+        "numoftasks": 5,
+        "uppercase": False,
+        "knowledgeid": 13
+    },
+    "logEntries": [
+        {
+            "task": "U Zagrebu, s Autobusnog kolodvora putujemo kojim prometnim sredstvom?",
+            "correctAnswer": "AUTOBUS",
+            "elapsedSecondsTask": 6586,
+            "answers": [
+                {
+                    "elapsedSeconds": 5270,
+                    "answer": 5,
+                    "correct": True
+                }
+            ]
+        },
+        {
+            "task": "Premladi smo za voziti se na prednjem sjedalu kojeg prijevoznog sredstva?",
+            "correctAnswer": "AUTOMOBIL",
+            "elapsedSecondsTask": 3406,
+            "answers": [
+                {
+                    "elapsedSeconds": 2950,
+                    "answer": 1,
+                    "correct": True
+                }
+            ]
+        },
+        {
+            "task": "Karta nam ne treba kod?",
+            "correctAnswer": "AUTOMOBIL",
+            "elapsedSecondsTask": 18552,
+            "answers": [
+                {
+                    "elapsedSeconds": 9992,
+                    "answer": 3,
+                    "correct": False
+                },
+                {
+                    "elapsedSeconds": 15120,
+                    "answer": 1,
+                    "correct": True
+                }
+            ]
+        },
+        {
+            "task": "Tracnicama se vozi?",
+            "correctAnswer": "VLAK",
+            "elapsedSecondsTask": 6147,
+            "answers": [
+                {
+                    "elapsedSeconds": 2952,
+                    "answer": 4,
+                    "correct": True
+                }
+            ]
+        },
+        {
+            "task": "Sa piste polijecemo kojim prometnim sredstvom?",
+            "correctAnswer": "ZRAKOPLOV",
+            "elapsedSecondsTask": 4422,
+            "answers": [
+                {
+                    "elapsedSeconds": 3590,
+                    "answer": 3,
+                    "correct": True
+                }
+            ]
+        }
+    ],
+    "result": -1
+}
+ili ovo
+[
+    [
+        {
+            "task": "Kombijem možemo prevoziti više putnika cestom nego s kojim prometnim sredstvom?",
+            "correctAnswer": "AUTOMOBIL",
+            "elapsedSecondsTask": 1084487,
+            "answers": [
+                {
+                    "elapsedSeconds": 1083194,
+                    "answer": 1,
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "task": "Na kolodvor dolazi?",
+            "correctAnswer": "VLAK",
+            "elapsedSecondsTask": 8529,
+            "answers": [
+                {
+                    "elapsedSeconds": 809,
+                    "answer": 1,
+                    "correct": false
+                },
+                {
+                    "elapsedSeconds": 2407,
+                    "answer": 1,
+                    "correct": false
+                },
+                {
+                    "elapsedSeconds": 5666,
+                    "answer": 5,
+                    "correct": false
+                },
+                {
+                    "elapsedSeconds": 7982,
+                    "answer": 4,
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "task": "Sa piste polijecemo kojim prometnim sredstvom?",
+            "correctAnswer": "ZRAKOPLOV",
+            "elapsedSecondsTask": 3633,
+            "answers": [
+                {
+                    "elapsedSeconds": 3064,
+                    "answer": 3,
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "task": "U luku pristaje?",
+            "correctAnswer": "BROD",
+            "elapsedSecondsTask": 2700,
+            "answers": [
+                {
+                    "elapsedSeconds": 2271,
+                    "answer": 2,
+                    "correct": true
+                }
+            ]
+        },
+        {
+            "task": "Kombijem možemo prevoziti više putnika cestom nego s kojim prometnim sredstvom?",
+            "correctAnswer": "AUTOMOBIL",
+            "elapsedSecondsTask": 5678,
+            "answers": [
+                {
+                    "elapsedSeconds": 5067,
+                    "answer": 1,
+                    "correct": true
+                }
+            ]
+        }
+    ]
+]
+
+
+dict_keys(['inputParams', 'logEntries'])
+{'inputParams': {'brojPonavljanja': '5',
+                 'lekcija': 'zagrade',
+                 'naslov': 'Matematika za 1. razred',
+                 'tezina': '2'},
+ 'logEntries': [{'problem': {'correct': True,
+                             'endTime': 1462488488047,
+                             'firstPart': '4+4+4+4+4+4=',
+                             'problemNumber': 1,
+                             'secondPart': '24',
+                             'startTime': 1462488477809,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 1,
+                 'vrijeme': 10238},
+                {'problem': {'correct': True,
+                             'endTime': 1462488505858,
+                             'firstPart': '(19-15)·6=',
+                             'problemNumber': 2,
+                             'secondPart': '24',
+                             'startTime': 1462488489554,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 2,
+                 'vrijeme': 16304},
+                {'problem': {'correct': True,
+                             'endTime': 1462488512148,
+                             'firstPart': '7·8-50=',
+                             'problemNumber': 3,
+                             'secondPart': '6',
+                             'startTime': 1462488507366,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 3,
+                 'vrijeme': 4782},
+                {'problem': {'correct': True,
+                             'endTime': 1462488517653,
+                             'firstPart': '(23-13):5=',
+                             'problemNumber': 4,
+                             'secondPart': '2',
+                             'startTime': 1462488513653,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 4,
+                 'vrijeme': 4000},
+                {'problem': {'correct': True,
+                             'endTime': 1462488524829,
+                             'firstPart': '(9-5)·6=',
+                             'problemNumber': 5,
+                             'secondPart': '24',
+                             'startTime': 1462488519156,
+                             'thirdPart': '',
+                             'unknown': 'secondPart'},
+                 'rbrZapis': 5,
+                 'vrijeme': 5673}]}
+				 
+				 
+dict_keys(['inputParams', 'logEntry'])
+{'inputParams': {'brojPonavljanja': '0',
+                 'isAdaptive': False,
+                 'isCollaborative': False,
+                 'lekcija': '22+5',
+                 'nacinLogiranja': '1po1',
+                 'naslov': 'Matematika - ponavljanje',
+                 'tezina': '2'},
+ 'logEntry': {'problem': {'correct': True,
+                          'endTime': 1479249559364,
+                          'firstPart': '85',
+                          'problemNumber': 6,
+                          'secondPart': '',
+                          'startTime': 1479249554740,
+                          'thirdPart': '+3=88',
+                          'unknown': 'firstPart'},
+              'rbrZapis': 6,
+              'vrijeme': 4624}}
+
+
+dict_keys(['time', 'gameLog'])
+{'gameLog': {'_rbrZapis': 15,
+             'logEntries': [{'correct': True,
+                             'tile1': {'id': 3,
+                                       'pairId': 4,
+                                       'selected': True,
+                                       'text': '18-8',
+                                       'type': 'text'},
+                             'tile2': {'id': 4,
+                                       'pairId': 3,
+                                       'selected': True,
+                                       'text': '10',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 6,
+                                       'pairId': 5,
+                                       'selected': True,
+                                       'text': '12+7',
+                                       'type': 'text'},
+                             'tile2': {'id': 10,
+                                       'pairId': 9,
+                                       'selected': True,
+                                       'text': '18',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 9,
+                                       'pairId': 10,
+                                       'selected': True,
+                                       'text': '15+3',
+                                       'type': 'text'},
+                             'tile2': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'}},
+                            {'correct': True,
+                             'tile1': {'id': 1,
+                                       'pairId': 2,
+                                       'selected': True,
+                                       'text': '13+4',
+                                       'type': 'text'},
+                             'tile2': {'id': 2,
+                                       'pairId': 1,
+                                       'selected': True,
+                                       'text': '17',
+                                       'type': 'text'}},
+                            {'correct': True,
+                             'tile1': {'id': 9,
+                                       'pairId': 10,
+                                       'selected': True,
+                                       'text': '15+3',
+                                       'type': 'text'},
+                             'tile2': {'id': 10,
+                                       'pairId': 9,
+                                       'selected': True,
+                                       'text': '18',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 12,
+                                       'pairId': 11,
+                                       'selected': True,
+                                       'text': '12+1',
+                                       'type': 'text'},
+                             'tile2': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 6,
+                                       'pairId': 5,
+                                       'selected': True,
+                                       'text': '12+7',
+                                       'type': 'text'},
+                             'tile2': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 5,
+                                       'pairId': 6,
+                                       'selected': True,
+                                       'text': '15+4',
+                                       'type': 'text'},
+                             'tile2': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'},
+                             'tile2': {'id': 5,
+                                       'pairId': 6,
+                                       'selected': True,
+                                       'text': '15+4',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 11,
+                                       'pairId': 12,
+                                       'selected': True,
+                                       'text': '11+2',
+                                       'type': 'text'},
+                             'tile2': {'id': 7,
+                                       'pairId': 8,
+                                       'selected': True,
+                                       'text': '11+4',
+                                       'type': 'text'}},
+                            {'correct': True,
+                             'tile1': {'id': 8,
+                                       'pairId': 7,
+                                       'selected': True,
+                                       'text': '15',
+                                       'type': 'text'},
+                             'tile2': {'id': 7,
+                                       'pairId': 8,
+                                       'selected': True,
+                                       'text': '11+4',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 5,
+                                       'pairId': 6,
+                                       'selected': True,
+                                       'text': '15+4',
+                                       'type': 'text'},
+                             'tile2': {'id': 11,
+                                       'pairId': 12,
+                                       'selected': True,
+                                       'text': '11+2',
+                                       'type': 'text'}},
+                            {'correct': False,
+                             'tile1': {'id': 6,
+                                       'pairId': 5,
+                                       'selected': True,
+                                       'text': '12+7',
+                                       'type': 'text'},
+                             'tile2': {'id': 11,
+                                       'pairId': 12,
+                                       'selected': True,
+                                       'text': '11+2',
+                                       'type': 'text'}},
+                            {'correct': True,
+                             'tile1': {'id': 12,
+                                       'pairId': 11,
+                                       'selected': True,
+                                       'text': '12+1',
+                                       'type': 'text'},
+                             'tile2': {'id': 11,
+                                       'pairId': 12,
+                                       'selected': True,
+                                       'text': '11+2',
+                                       'type': 'text'}},
+                            {'correct': True,
+                             'tile1': {'id': 5,
+                                       'pairId': 6,
+                                       'selected': True,
+                                       'text': '15+4',
+                                       'type': 'text'},
+                             'tile2': {'id': 6,
+                                       'pairId': 5,
+                                       'selected': True,
+                                       'text': '12+7',
+                                       'type': 'text'}}]},
+ 'time': 185.101}
+ 
+ 
+dict_keys(['time'])
+{'time': 30.365}
+
+
+dict_keys(['type', 'data', 'group', 'iframeId'])
+{'data': {'first': 1, 'second': 5},
+ 'group': 'object_widget_882271536_group_1',
+ 'iframeId': 'object_widget_882271536',
+ 'type': 'post-group-message'}
+ 
+dict_keys(['type', 'data', 'group'])
+{'data': {'first': 1},
+ 'group': 'object_widget_882271536_group_1',
+ 'type': 'post-group-message'}
+ 
+dict_keys(['type', 'data', 'options'])
+{'data': '*', 'options': None, 'type': 'loaded'}
+
+dict_keys(['type', 'data'])
+{'data': '*', 'type': 'loaded'}
+
+

@@ -56,7 +56,7 @@ def score_lesson(lesson, score, user, percentage=1): # bitno, prije je bio if ri
 			score 
 	
 	if user not in users: 
-		print("{} not in user!".format(user))
+		print("{} not in users!".format(user))
 		users[user] = 0.5
 	
 	tmp[0] += fr(score) * ft(score) * fp(users[user])**score * percentage

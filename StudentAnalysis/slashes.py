@@ -5,6 +5,17 @@
 import codecs
 import re
 import time
+from utils import get_file_name_from_dates
+
+import argparse
+from datetime import datetime
+
+parser = argparse.ArgumentParser(description="removes unnesesary slashes that some logs have while others don't.")
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+					
+args = parser.parse_args()
+
+dates = args.date
 
 print("reading started")
 
@@ -15,8 +26,8 @@ i = 0
 i2 = 0
 j = 0
 start_time = time.time()
-with codecs.open('download_collaborative.txt', 'r', "utf-8-sig") as fin:	
-	with codecs.open('slashes_collaborative.txt', 'w', "utf-8-sig") as fout:		
+with codecs.open(get_file_name_from_dates('download_collaborative', dates), 'r', "utf-8-sig") as fin:	
+	with codecs.open(get_file_name_from_dates('slashes_collaborative', dates), 'w', "utf-8-sig") as fout:		
 		for line in fin:
 			j += 1
 			if time.time() - start_time > 10: 

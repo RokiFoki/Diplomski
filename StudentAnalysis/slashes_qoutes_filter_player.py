@@ -1,9 +1,6 @@
 import os 
 
-def execute_python_script(name):
-	print("executing {}".format(name))
-	os.system("python {}".format(name))
-	print()
+from utils import execute_python_script
 
 execute_python_script("slashes_player.py")
 execute_python_script("quotes_player.py")

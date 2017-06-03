@@ -54,7 +54,7 @@ def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rije
 			score 
 	
 	if lesson not in lessons: 
-		print("{} not in lessons!".format(lesson))
+		if len(str(lesson)) < 20: print("{} not in lessons!".format(lesson))
 		lessons[lesson] = 0.5
 	
 	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score * percentage
@@ -83,11 +83,36 @@ with codecs.open('logs_AR.txt', 'r', "utf-8-sig") as fin:
 		
 		try:		
 			params = eval(JSONParams)
-			if 500 < len(JSONParams) < 1000 and eventType == "AR.Math":
-				print()
-				pprint(params)
-				print(len(JSONParams))
-				exit()
+			
+			def math_analyse(params):
+				for question in params:
+					if "answers" not in question: continue
+					
+					correctAnswer = question["correctAnswer"]
+					answerLen = len(correctAnswer)
+					correctAnswers = []
+					for i, c in enumerate(correctAnswer):
+						correctAnswers.append(c + '0'*(answerLen-1-i))
+						
+					answeredAnswers = [0] * answerLen
+					answers = question["answers"]
+					
+					elapsedSeconds = 0
+					for answer in answers:
+						if answer["answer"] in correctAnswers:
+							answeredAnswers[correctAnswers.index(answer["answer"])] = 1
+							
+							elapsedSeconds = int(answer["elapsedSeconds"])
+					
+					if 0 in answeredAnswers:
+						pass
+					
+					# str(question) is probably always different
+					
+					miliseconds = max(elapsedSeconds - normal_miliseconds, 0)
+					penalty = penalty_miliseconds * (len(answers) - answerLen)
+					
+					score_user(name, 0 not in answeredAnswers, str(question), 1 - min(miliseconds + penalty, max_miliseconds) / max_miliseconds)
 			
 			if eventType == "AR.Shapes" and "answers" in params[0]:
 				for question in params:
@@ -120,35 +145,10 @@ with codecs.open('logs_AR.txt', 'r', "utf-8-sig") as fin:
 					score_user(name, sovled, lesson, score)
 					
 			elif eventType == "AR.Shapes" and "answers" not in params[0]:
-				for question in params[1:]:
-					correctAnswer = question["correctAnswer"]
-					answerLen = len(correctAnswer)
-					correctAnswers = []
-					for i, c in enumerate(correctAnswer):
-						print(c)
-						correctAnswers.append(c + '0'*(answerLen-1-i))
-						
-					answeredAnswers = [0] * answerLen
-					answers = question["answers"]
-					
-					elapsedSeconds = 0
-					for answer in answers:
-						if answer["answer"] in correctAnswers:
-							answeredAnswers[correctAnswers.index(answer["answer"])] = 1
-							
-							elapsedSeconds = int(answer["elapsedSeconds"])
-					
-					if 0 in answeredAnswers:
-						pass
-					
-					# str(question) is probably always different
-					
-					miliseconds = max(elapsedSeconds - normal_miliseconds, 0)
-					penalty = penalty_miliseconds * (len(answers) - answerLen)
-					
-					score_user(name, 0 not in answeredAnswers, str(question), 1 - min(miliseconds + penalty, max_miliseconds) / max_miliseconds)
-					
-				
+				math_analyse(params)
+			elif eventType == "AR.Math":
+				math_analyse(params)	
+				pass
 		except Exception as e:
 			print("PROBLEM OCCURED", i, e)
 			print(line)
@@ -164,7 +164,7 @@ print(i, j, k)
 print("reading finished")
 
 print("prining set (size: {})".format(len(s)))
-for string in sorted([int(element) for element in s]):
+for string in s:
 	print(string)
 	
 	

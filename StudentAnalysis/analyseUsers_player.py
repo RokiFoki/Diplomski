@@ -64,8 +64,7 @@ def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rije
 	
 	d[user] = tmp
 	
-ma0, ma1, ma2, ma3, ma4, ma5, ma6 = 0, 0, 0, 0, 0, 0, 0	
-
+	
 dict_student_problem = {}
 with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
 		for line in fin:
