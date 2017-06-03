@@ -11,6 +11,21 @@ from pprint import pprint
 import os.path
 import matplotlib.pyplot as plt
 
+from utils import get_file_name_from_dates
+from datetime import datetime
+import argparse
+
+parser = argparse.ArgumentParser(description="?????.")
+
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+parser.add_argument('-i', help="image file name (no extension)", type=str, metavar="IMG")
+parser.add_argument('-r', help="results file name (no extension)", type=str, default="users.txt", metavar="rFile")
+parser.add_argument('-d', help="lesson info file name (no extension)", type=str, default="lessons.txt", metavar="dFile")
+
+args = parser.parse_args()
+dates = args.date
+
+
 print("reading started - Users")
 start_time = time.time() # save time
 i = 0
@@ -20,10 +35,8 @@ penalty_miliseconds = 2 * 1000
 max_miliseconds = 120 * 1000
 normal_miliseconds = 40 * 1000
 
-display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
-
 lessons = {}
-lessons_path = "tmp/lessons/lessons_AR.txt" # location of lesson weights
+lessons_path = "tmp/lessons/{}_AR.txt".format(args.d) # location of lesson weights
 if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -44,8 +57,7 @@ def fp(x): return k**(1-2*x)
 def fr(x): return x**2
 def ft(x): return (x+1)/2.0
 
-def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
-	# ne moze se samo copy paste
+def score_user(user, score, lesson, percentage=1):
 	global d
 	tmp = d.get(user, [0, 0])
 	
@@ -62,7 +74,7 @@ def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rije
 	
 	d[user] = tmp
 	
-with codecs.open('logs_AR.txt', 'r', "utf-8-sig") as fin:
+with codecs.open(get_file_name_from_dates('logs_AR', dates), 'r', "utf-8-sig") as fin:
 	for line in fin:
 		i += 1	
 		if time.time() - start_time > 10: 
@@ -168,14 +180,14 @@ for string in s:
 	print(string)
 	
 	
-with codecs.open('tmp/users/users_AR.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/users/{}_AR.txt'.format(args.r), "w", 'utf-8-sig') as fout:
 	for user in sorted(d.keys()):
 		print(user, d[user][0], d[user][1], d[user][0]/ d[user][1])
 		fout.write("{}:{}\n".format(user, d[user][0] / d[user][1]))
 
 		
-if display_graph:
-	img_name = "tmp/users/{}_AR.png".format(sys.argv[1]);
+if args.i:
+	img_name = "tmp/users/{}_AR.png".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)

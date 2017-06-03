@@ -18,9 +18,9 @@ import argparse
 parser = argparse.ArgumentParser(description="?????.")
 
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
-parser.add_argument('-i', help="image file name", type=str, metavar="IMG")
-parser.add_argument('-r', help="results file name", type=str, default="users.txt", metavar="rFile")
-parser.add_argument('-d', help="lesson info file name", type=str, default="lessons.txt", metavar="dFile")
+parser.add_argument('-i', help="image file name (no extension)", type=str, metavar="IMG")
+parser.add_argument('-r', help="results file name (no extension)", type=str, default="users.txt", metavar="rFile")
+parser.add_argument('-d', help="lesson info file name (no extension)", type=str, default="lessons.txt", metavar="dFile")
 
 args = parser.parse_args()
 dates = args.date
@@ -31,7 +31,7 @@ i = 0
 j = 0
 
 lessons = {}
-lessons_path = "tmp/lessons/{}".format(args.d) # location of lesson weights
+lessons_path = "tmp/lessons/{}.txt".format(args.d) # location of lesson weights
 if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -72,7 +72,7 @@ def score_user(user, score, lesson, percentage=1):
 	
 	if lesson not in lessons: 
 		print("{} not in lessons!".format(lesson))
-		lessons[lesson] = 0.5
+		lessons[lesson] = 0.8
 	
 	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score * percentage
 	tmp[1] += fr(score) * fp(lessons[lesson])**score
@@ -294,7 +294,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 print(i, j)
 print("reading finished")
 
-with codecs.open('tmp/users/{}'.format(args.r), "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/users/{}.txt'.format(args.r), "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
 		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))
@@ -305,7 +305,7 @@ for string in s:
 	print(string)
 	
 if args.i:
-	img_name = "tmp/users/{}".format(args.i);
+	img_name = "tmp/users/{}.png".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)

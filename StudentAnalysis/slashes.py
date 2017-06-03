@@ -10,7 +10,7 @@ from utils import get_file_name_from_dates
 import argparse
 from datetime import datetime
 
-parser = argparse.ArgumentParser(description="removes unnesesary slashes that some logs have while others don't.")
+parser = argparse.ArgumentParser(description="Removes unnesesary slashes that some logs might have.")
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 					
 args = parser.parse_args()

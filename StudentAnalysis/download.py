@@ -13,7 +13,8 @@ import argparse
 from utils import get_file_name_from_dates
 from datetime import datetime
 
-parser = argparse.ArgumentParser(description="Downloads info onh specific dates.")
+parser = argparse.ArgumentParser(description="Downloads logs from specified dates.")
+parser.add_argument('type', help="lesson type", type=str)
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
@@ -32,30 +33,45 @@ print("successfully connected to server (IP:{}, username:{} DBname:{})".format(I
 
 cursor = conn.cursor()  
 
-def generate_query(dates):
+def generate_query(dates, type):
+	type_constraint = {
+	"collaborative": '''JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' ''',
+	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND JSONparams NOT LIKE '%waitingForChecker%' AND JSONparams NOT LIKE '%confirmSolution%' AND JSONparams NOT LIKE '%needToDiscuss%'  ''',
+	"AR": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType LIKE 'AR%' '''
+	}
+
 	query = '''
 	SELECT [User].Name, LogEvent.Id, LogEvent.EventName, LogEvent.EventType, LogEvent.Time, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams), LogEvent.ContextualInfoId FROM LogEvent 
 	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
 	JOIN [User] ON ContextualInfo.UserId = [User].Id
-	WHERE JSONparams LIKE '{{"lesson":%isCollaborative%' AND eventName = 'widget_log' 
+	WHERE {} 
 	AND ( 
 		{}
 	)
-	'''.format(" OR\n\t\t".join(["(ContextualInfo.Time BETWEEN '{0}/{1}/{2}' and '{0}/{1}/{2} 23:59:59')".format(date.month, date.day, date.year) for date in dates]))
+	'''.format(
+		type_constraint[type],
+		" OR\n\t\t".join(["(ContextualInfo.Time BETWEEN '{0}/{1}/{2}' and '{0}/{1}/{2} 23:59:59')".format(date.month, date.day, date.year) for date in dates]))
 	
 	return query
 		
 
-query = generate_query(args.date)
+query = generate_query(args.date, args.type)
 print("executing query ({})".format(query))
 
-file_name = get_file_name_from_dates("download_collaborative", args.date)
+file_type ={
+	"collaborative" : "download_collaborative",
+	"AR" : "download_AR",
+	"competitive" : "download_player"
+}
+
+file_name = get_file_name_from_dates(file_type[args.type], args.date)
 
 cursor.execute(query)
 print("query executed") 
 
 i = 0
 start_time = time.time()
+print("writing to {}".format(file_name))
 with codecs.open(file_name, 'w', "utf-8-sig") as f:
 	for row in cursor:	
 		i += 1

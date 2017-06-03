@@ -305,7 +305,7 @@ for string in s:
 	print(string)
 
 if args.i:
-	img_name = "tmp/users/{}".format(args.i);
+	img_name = "tmp/lessons/{}".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)
