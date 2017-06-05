@@ -5,6 +5,18 @@
 import codecs
 import re
 import time
+from utils import get_file_name_from_dates
+
+import argparse
+from datetime import datetime
+
+parser = argparse.ArgumentParser(description="Removes unnesesary slashes that some logs might have.")
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+					
+args = parser.parse_args()
+
+dates = args.date
+
 
 print("reading started")
 
@@ -15,8 +27,8 @@ i = 0
 i2 = 0
 j = 0
 start_time = time.time()
-with codecs.open('download_player.txt', 'r', "utf-8-sig") as fin:	
-	with codecs.open('slashes_player.txt', 'w', "utf-8-sig") as fout:		
+with codecs.open(get_file_name_from_dates('download_player', dates), 'r', "utf-8-sig") as fin:	
+	with codecs.open(get_file_name_from_dates('slashes_player', dates), 'w', "utf-8-sig") as fout:		
 		for line in fin:
 			j += 1
 			if time.time() - start_time > 10: 
@@ -34,9 +46,7 @@ with codecs.open('download_player.txt', 'r', "utf-8-sig") as fin:
 				m = re.search(regex, line)
 				if m:
 					i2 += 1				
-					
-					if i2 % 5 == 0: print("i", i2)
-				
+									
 					k = 0
 					while m:
 						line = re.sub(regex, ct, line)						

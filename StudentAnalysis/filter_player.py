@@ -9,61 +9,28 @@ import sys
 from pprint import pprint
 
 import os.path
+from utils import get_file_name_from_dates
+
+import argparse
+from datetime import datetime
+
+parser = argparse.ArgumentParser(description="Removes unnesesary quotes that some logs might have.")
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+					
+args = parser.parse_args()
+
+dates = args.date
 
 print("reading started")
 start_time = time.time() # save time
 i = 0
 j = 0
 
-"""
-penalty_miliseconds = 2 * 1000
-max_miliseconds = 120 * 1000
-normal_miliseconds = 40 * 1000
-
-display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
-
-lessons = {}
-lessons_path = "tmp/lessons/lessons_AR.txt" # location of lesson weights
-if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
-	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
-		for line in fin:
-			a, b = line.split(":")
-			a, b = a, float(b)
-			
-			lessons[a] = b
-		
-"""
 s = set()
 d = {}
 
-"calculating function of dependecies"
-
-
-k=3
-def fp(x): return k**(1-2*x)
-def fr(x): return x**2
-def ft(x): return (x+1)/2.0
-
-def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rijesio else nije...., sada je kad ne rijesi -1!!!!
-	# ne moze se samo copy paste
-	global d
-	tmp = d.get(user, [0, 0])
-	
-	score = 1 if score == True else \
-			-1 if score == False else \
-			score 
-	
-	if lesson not in lessons: 
-		print("{} not in lessons!".format(lesson))
-		lessons[lesson] = 0.5
-	
-	tmp[0] += fr(score) * ft(score) * fp(lessons[lesson])**score * percentage
-	tmp[1] += fr(score) * fp(lessons[lesson])**score
-	
-	d[user] = tmp
-	
-with codecs.open('logs_player.txt', 'r', "utf-8-sig") as fin:
-	with codecs.open('logs_player_filtered.txt', 'w', "utf-8-sig") as fout:
+with codecs.open(get_file_name_from_dates('logs_player', dates), 'r', "utf-8-sig") as fin:
+	with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'w', "utf-8-sig") as fout:
 		for line in fin:
 			i += 1	
 			if time.time() - start_time > 10: 
@@ -122,7 +89,7 @@ with codecs.open('logs_player.txt', 'r', "utf-8-sig") as fin:
 				
 		
 			
-print(i, j, k)
+print(i, j)
 print("reading finished")
 
 print("prining set (size: {})".format(len(s)))

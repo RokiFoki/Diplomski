@@ -11,6 +11,21 @@ from pprint import pprint
 import os.path
 import matplotlib.pyplot as plt
 
+from utils import get_file_name_from_dates
+from datetime import datetime
+import argparse
+
+parser = argparse.ArgumentParser(description="?????.")
+
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+parser.add_argument('-i', help="image file name (no extension)", type=str, metavar="IMG")
+parser.add_argument('-r', help="results file name (no extension)", type=str, default="users.txt", metavar="rFile")
+parser.add_argument('-d', help="lesson info file name (no extension)", type=str, default="lessons.txt", metavar="dFile")
+
+args = parser.parse_args()
+dates = args.date
+
+
 print("reading started - Lessons")
 start_time = time.time() # save time
 i = 0
@@ -22,10 +37,9 @@ max_miliseconds = 120 * 1000
 normal_miliseconds = 40 * 1000
 
 """
-display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 users = {}
-users_path = "tmp/users/users_player.txt" # results will be stored on users_path location
+users_path = "tmp/users/{}_player.txt".format(args.d) # results will be stored on users_path location
 if os.path.isfile(users_path): # if there are saved weights for the lessons, set them as initial weights
 	with codecs.open(users_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -65,7 +79,7 @@ def score_lesson(lesson, score, user, percentage=1): # bitno, prije je bio if ri
 	d[lesson] = tmp
 	
 dict_student_problem = {}
-with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
+with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "utf-8-sig") as fin:
 		for line in fin:
 			i += 1	
 			if time.time() - start_time > 10: 
@@ -150,14 +164,14 @@ for key in dict_student_problem:
 		score_lesson(lesson, problem["correct"], name)
 	
 	
-with codecs.open('tmp/users/users_player.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/lessons/{}_player.txt'.format(args.r), "w", 'utf-8-sig') as fout:
 	for user in sorted(d.keys()):
 		print(user, d[user][0], d[user][1], d[user][0]/ d[user][1])
 		fout.write("{}:{}\n".format(user, d[user][0] / d[user][1]))
 
 		
-if display_graph:
-	img_name = "tmp/lessons/{}_player.png".format(sys.argv[1]);
+if args.i:
+	img_name = "tmp/lessons/{}_player.png".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)

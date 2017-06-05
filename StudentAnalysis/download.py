@@ -36,7 +36,8 @@ cursor = conn.cursor()
 def generate_query(dates, type):
 	type_constraint = {
 	"collaborative": '''JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' ''',
-	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND JSONparams NOT LIKE '%waitingForChecker%' AND JSONparams NOT LIKE '%confirmSolution%' AND JSONparams NOT LIKE '%needToDiscuss%'  ''',
+	#"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND JSONparams NOT LIKE '%waitingForChecker%' AND JSONparams NOT LIKE '%confirmSolution%' AND JSONparams NOT LIKE '%needToDiscuss%'  ''',
+	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' ''',
 	"AR": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType LIKE 'AR%' '''
 	}
 

@@ -46,8 +46,6 @@ with codecs.open(get_file_name_from_dates('download_collaborative', dates), 'r',
 				if m:
 					i2 += 1				
 					
-					if i2 % 5 == 0: print("i", i2)
-				
 					k = 0
 					while m:
 						line = re.sub(regex, ct, line)						

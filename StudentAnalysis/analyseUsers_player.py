@@ -11,6 +11,21 @@ from pprint import pprint
 import os.path
 import matplotlib.pyplot as plt
 
+from utils import get_file_name_from_dates
+from datetime import datetime
+import argparse
+
+parser = argparse.ArgumentParser(description="?????.")
+
+parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
+parser.add_argument('-i', help="image file name (no extension)", type=str, metavar="IMG")
+parser.add_argument('-r', help="results file name (no extension)", type=str, default="users.txt", metavar="rFile")
+parser.add_argument('-d', help="lesson info file name (no extension)", type=str, default="lessons.txt", metavar="dFile")
+
+args = parser.parse_args()
+dates = args.date
+
+
 print("reading started - Users")
 start_time = time.time() # save time
 i = 0
@@ -22,10 +37,9 @@ max_miliseconds = 120 * 1000
 normal_miliseconds = 40 * 1000
 
 """
-display_graph = len(sys.argv) > 1 # graphs are displayed if there is at least one additional parameter to the script
 
 lessons = {}
-lessons_path = "tmp/lessons/lessons_player.txt" # location of lesson weights
+lessons_path = "tmp/lessons/{}_player.txt".format(args.d) # location of lesson weights
 if os.path.isfile(lessons_path): # if there are saved weights for the lessons use them
 	with codecs.open(lessons_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -66,7 +80,7 @@ def score_user(user, score, lesson, percentage=1): # bitno, prije je bio if rije
 	
 	
 dict_student_problem = {}
-with codecs.open('logs_player_filtered.txt', 'r', "utf-8-sig") as fin:
+with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "utf-8-sig") as fin:
 		for line in fin:
 			i += 1	
 			if time.time() - start_time > 10: 
@@ -150,14 +164,14 @@ for key in dict_student_problem:
 		score_user(name, problem["correct"], lesson)
 	
 	
-with codecs.open('tmp/users/users_player.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/users/{}_player.txt'.format(args.r), "w", 'utf-8-sig') as fout:
 	for user in sorted(d.keys()):
 		print(user, d[user][0], d[user][1], d[user][0]/ d[user][1])
 		fout.write("{}:{}\n".format(user, d[user][0] / d[user][1]))
 
 		
-if display_graph:
-	img_name = "tmp/users/{}_player.png".format(sys.argv[1]);
+if args.i:
+	img_name = "tmp/users/{}_player.png".format(args.i);
 
 	plt.hist([ int(d[key][0]/d[key][1] * 100) for key in d])
 	plt.savefig(img_name)
