@@ -50,14 +50,16 @@ analyse_lessons = {
 	
 with codecs.open(get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date]), "r", "utf-8-sig") as fin:
 	if args.e:
-		for date in fin:
+		dates_lines = fin.readlines()
+		for date in dates_lines:
 			date = date.strip()
 			
 			execute_python_script("download.py", [args.type, date, "-ip", args.ip, "-port", args.port, "-db", args.db])
 			execute_python_script(preprocess[args.type], [date])
-			execute_python_script(analyse_users[args.type], [date, "-d", "lessons.txt", "-r", get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")])])
+			execute_python_script(analyse_users[args.type], [date, "-d", "lessons.txt", "-r", get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="")])
 		
-		time.sleep(3)
+		dates = " ".join([date.strip() for date in dates_lines])
+		execute_python_script("preprocess_train.py", [args.type, dates])
 	else:
 		dates = " ".join([date.strip() for date in fin.readlines()])
 		execute_python_script("download.py", [args.type, dates, "-ip", args.ip, "-port", args.port, "-db", args.db])

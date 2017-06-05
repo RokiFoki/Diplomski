@@ -38,7 +38,7 @@ def execute_python_script(name):
 for i in range(n):
 	print("iteration {} started".format(i+1))
 	parameter = ' lessons_{}'.format(i+1) if display_lessons and i % display_each == 0 else ''
-	execute_python_script("analyseLessons.py" + parameter)
+	execute_python_script("analyseLessons.py" + parameter) #USE THE ONE FROM import utils!!!!!!!!!!!!!!!!!!!
 	
 	parameter = ' users_{}'.format(i+1) if display_users and i % display_each == 0 else ''
 	execute_python_script("analyseUsers.py" + parameter)

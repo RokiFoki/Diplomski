@@ -1,0 +1,102 @@
+﻿"Lijepu našu" je napisao?:0.986222958547522
+"Ljubav i zloba" je opera koju je napisao?:0.9532442911429843
+Ako želimo brzo otputovati na drugi kontinent, putujemo s?:0.939748045356675
+Cepove boca i poklopce tegli koje nam više ne trebaju možemo odložiti u?:0.873522304587957
+Cestom putnike prevozi?:0.980527408382175
+Domacin ili domacica (stjuard ili stjuardesa) se brinu za putnike u?:0.7603010135190329
+Hrvatsku himnu je napisao?:0.9892298364937131
+Iz luke isplovljavamo kojim prometnim sredstvom?:0.9411047152506903
+Kad dodemo na plažu moramo napuhati ...?:0.9957067107813896
+Kad izademo iz mora moramo se zaštititi s ...?:0.9822821825547191
+Kad odlazimo s plaže trebali bi ispuhati ...?:0.9984818997281264
+Kad znamo da cemo biti dugo na suncu moramo ponijeti puno cega?:0.9766412530844408
+Kad znamo da cemo biti puno na suncu, na kožu nanosimo?:0.9876859370779495
+Kada imamo stare staklenke od zimnice koje su nam viška, odložiti cemo ih u?:0.953348639042552
+Kada popijemo pice iz limenke, limenku cemo odložiti u?:0.9643179187449537
+Kako bi došli na otok trebamo putovati s?:0.6970701546312845
+Karta nam ne treba kod?:1.0
+Kartonsko pakiranje recikliramo tako da ga bacimo u?:0.9123057512181414
+Koga smatramo najplodnijim hrvatskim kompozitorom 19. st.?:0.9351474888541849
+Koje prometno sredstvo postoji u izvedbi na pogon strujom i na pogon ugljenom?:0.997440834499774
+Koji glazbenik je napisao hrvatsku himnu?:0.9809284336717073
+Koji književnik je prvi govorio u Hrvatskom saboru na hrvatskom jeziku?:0.959626114523805
+Koji kontejner koristimo za recikliranje limenki od pica?:0.9611653936878752
+Koji kontejner koristimo za recikliranje papira?:0.9612515557164273
+Koji kontejner koristimo za recikliranje plastike i ambalaže prehrambenih proizvoda?:0.9589864944811961
+Koji kontejner koristimo za recikliranje stakla?:0.9720719867985
+Koji pisac je bio urednik više novina?:1.0
+Koji politicar je pokrenuo "Novine horvatske", prve novine na hrvatskom jeziku?:0.8914177487508389
+Koji politicar je pokrenuo tiskaru za tisak knjiga na hrvatskom?:0.8448036328308289
+Koji politicar je ujedno bio i pjesnik?:0.915544872541421
+Koji politicar je ukinuo kmetstvo?:0.9717779197711467
+Koji poznati književnik je bio urednik više novina?:0.9052309492874537
+Koji poznati pisac je pisao iskljucivo na hrvatskom jeziku?:0.9793999345470625
+Koji vojnik je ujedno volio uciti i zanimao se za znanost?:0.9435292769524926
+Kojim prometnim sredstvom upravlja kapetan?:0.9212274319090742
+Kojim prometnim sredstvom upravlja pilot?:0.8194635794287761
+Kojim prometnim sredstvom upravlja strojovoda?:0.9572263966504253
+Kojim prometnim sredstvom za prijevoz putnika upravlja vozac?:0.9880184062791161
+Kombijem možemo prevoziti manje putnika cestom nego s kojim prometnim sredstvom?:0.9871504501693239
+Kombijem možemo prevoziti više putnika cestom nego s kojim prometnim sredstvom?:0.931740837546171
+Krenuli smo nešto crtati i nismo zadovoljni kako nam je uspjelo, kuda je nabolje baciti taj list papira?:0.9674953411043453
+Ljeti je važno piti puno tekucine, zato na plažu nosimo ...?:0.992071715567567
+Mama nam je pripremila finu tunjevinu iz konzerve za dorucak - kuda treba odložiti praznu konzervu nakon što je opere?:0.7793842380447161
+Mlažnjak je vrsta kojeg prometnog sredstva?:0.849682365663789
+Morem plovi?:0.8910153321351019
+Mornar pomaže u vožnji kojeg prometnog sredstva?:0.9564073235031189
+Na kolodvor dolazi?:1.0
+Na parkingu parkiramo?:0.9831687890231964
+Na plaži i u kupaonici ne koristimo isti ...?:0.9815666638742311
+Na plaži ležimo na cemu?:0.9987381508711487
+Na plaži ne smijemo na cemu zaspati jer ce nas sunce opeci?:0.989914181027835
+Na plaži se igramo s ...?:0.9994525175651239
+Na stajalištu se zaustavlja?:0.9787874624028898
+Najpoznatiji ban u 19. stoljecu je bio?:0.9895452888077068
+Najviše dvije do pet osoba možemo prevoziti u?:1.0
+Plasticne vrecice možemo reciklirati u?:0.8849002592919591
+Po brdima se ne smijemo penjati u ...?:0.9841296929564519
+Po kome je Maksimir dobio ime?:0.976444798996959
+Po kome je nazvana obližnja koncertna dvorana?:0.9757795266864135
+Po ljeti je jako vruce i na noge oblacimo ...?:0.9908384642929441
+Po ljeti pijemo puno cega?:0.9973515676558813
+Po plaži ne smijemo trcati u ...?:0.9939523905564357
+Po stijenama ne smijemo skakati u ...?:0.9760979374501514
+Popili smo sok ili bezalkohonlno pice u bocici, gdje je najbolje odložiti bocicu?:0.8888081860253203
+Prazne boce od deterdženta možemo reciklirati u?:0.928999465841683
+Prazne bocice od šampona možemo reciklirati u?:0.9264573999649487
+Prazne staklene boce, primjerice od mineralne vode, možemo reciklirati u?:0.9433840164421013
+Prazne tetrapake od mlijeka ili jogurta možemo reciklirati u?:0.9063049301362996
+Premladi smo za voziti se na prednjem sjedalu kojeg prijevoznog sredstva?:0.9554296448647094
+Prije izlaska na sunce, obavezno je zaštititi se s ...?:0.9744763659705552
+Prtljagu spremamo u bunker kod kojeg prometnog sredstva?:0.8772947970681788
+Prtljagu spremamo u gepek kod kojeg prometnog sredstva?:0.8294706370293653
+Razlicite kompozicije za prijevoz putnika i robe može imati?:0.9195024113750632
+Sa piste polijecemo kojim prometnim sredstvom?:0.9744578470361174
+Stare casopise umjesto da nam zauzimaju mjesto možemo reciklirati tako da ih bacimo u?:0.9686213699095438
+Stare napuknute caše najbolje je reciklirati tako da ih bacimo u?:0.9441110706755993
+Stare novine je najbolje baciti u?:0.9866604685323677
+Suncu se ne smijemo izlagati ako se ne namažemo s ...?:0.9945745626466925
+Tko je bio vrhovni zapovjednik hrvatske vojske?:0.9495717210652355
+Tko je bio zacetnik Ilirskog pokreta?:0.9223017529300246
+Tko je pokrenuo "Novine horvatske", prve novine na hrvatskom jeziku?:0.9916666666666667
+Tko je pokrenuo prve novine na hrvatskom jeziku "Novine horvatske" i prilog "Danica"?:0.9214262282210223
+Tko je pokrenuo tiskaru za tisak knjiga na hrvatskom?:0.9944444444444445
+Tko je ukinuo kmetstvo?:1.0
+Tko je uredio Maksimir?:0.9427843912688929
+Tko od osoba ciji su portreti u razredu je autor opere?:0.9505776545310934
+Tko od osoba ciji su portreti u razredu je bio vojnik?:0.9659232311975924
+Tko od osoba ciji su portreti u razredu je imao titulu bana?:0.9881851247207539
+Tko od osoba na portretima u razredu je bio politicar ali i biskup?:0.883526674247445
+Tracnicama se vozi?:0.9980600104081334
+Trajekt je vrsta kojeg prometnog sredstva?:0.7761785413187281
+U Zagrebu, s Autobusnog kolodvora putujemo kojim prometnim sredstvom?:0.9936392153384346
+U Zagrebu, s Glavnog kolodvora putujemo kojim prometnim sredstvom?:0.991669665251545
+U luku pristaje?:0.9883313102500493
+U pošti smo dobili puno prospekata, reklama i sl. koje nas ne zanimaju, gdje ih baciti da budu reciklirani?:0.954876352528786
+U zracnu luku slijece?:0.9704579055083123
+Vagoni su dio kojeg prometnog sredstva?:0.9986514660672251
+Vozni red nemamo kod?:0.9418870003859264
+Za odlazak na izlet, u školi nas ceka koje prijevozno sredstvo?:0.8581179144295205
+Zrakom leti?:0.9560278482328456
+Što ne smijemo ostaviti na oštrim stijenama da se ne probuši?:0.9758948294160573
+Što ne smijemo ostaviti na suncu jer ce se ugrijati?:0.9944027706546803
