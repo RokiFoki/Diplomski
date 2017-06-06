@@ -2,8 +2,9 @@ import os
 
 def execute_python_script(name, params):
 	print("executing {} {}".format(name, " ".join([str(param) for param in params])))
-	os.system("python {} {}".format(name, " ".join([str(param) for param in params])))
-	print()
+	exit_status = os.system("python3 {} {}".format(name, " ".join([str(param) for param in params])))
+	if exit_status: exit(1)
+	print("")
 
 def get_file_name_from_dates(base_name, dates, prefix="logs/", suffix=".txt"):
 	return "{}{}_{}{}".format(

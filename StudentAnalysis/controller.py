@@ -59,7 +59,7 @@ with codecs.open(get_file_name_from_dates("dates_{}".format(args.type), [args.st
 			execute_python_script(analyse_users[args.type], [date, "-d", "lessons.txt", "-r", get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="")])
 		
 		dates = " ".join([date.strip() for date in dates_lines])
-		execute_python_script("preprocess_train.py", [args.type, dates])
+		execute_python_script("preprocess_predict.py", [args.type, dates])
 	else:
 		dates = " ".join([date.strip() for date in fin.readlines()])
 		execute_python_script("download.py", [args.type, dates, "-ip", args.ip, "-port", args.port, "-db", args.db])

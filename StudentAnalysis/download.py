@@ -10,6 +10,7 @@ import pymssql
 import codecs
 import time
 import argparse
+import os
 from utils import get_file_name_from_dates
 from datetime import datetime
 
@@ -27,6 +28,17 @@ IP = args.ip+":"+str(args.port)
 username = 'roko'
 password = 'g546z6rhtf'
 DBname=args.db
+
+file_type ={
+	"collaborative" : "download_collaborative",
+	"AR" : "download_AR",
+	"competitive" : "download_player"
+}
+
+file_name = get_file_name_from_dates(file_type[args.type], args.date)
+if os.path.isfile(file_name): 
+	print("file with name {} already exists".format(file_name))
+	exit()
 
 conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
 print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
@@ -58,14 +70,6 @@ def generate_query(dates, type):
 
 query = generate_query(args.date, args.type)
 print("executing query ({})".format(query))
-
-file_type ={
-	"collaborative" : "download_collaborative",
-	"AR" : "download_AR",
-	"competitive" : "download_player"
-}
-
-file_name = get_file_name_from_dates(file_type[args.type], args.date)
 
 cursor.execute(query)
 print("query executed") 

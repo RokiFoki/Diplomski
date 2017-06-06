@@ -69,3 +69,6 @@ gamelog !!!!!!!!!!!!!
 
 
 
+dependencies:
+	tensorflow
+	pymssql

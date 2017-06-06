@@ -39,6 +39,8 @@ if os.path.isfile(lessons_path): # if there are saved weights for the lessons us
 			a, b = a, float(b)
 			
 			lessons[a] = b
+else:
+	print("there is no file {}".fomrat(lessons_path))
 		
 def get_entries_element(splited_entries, name):
 	"""
@@ -109,7 +111,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 				if not isCollaborative: # sve su kolaborativne
 					continue
 				
-				lesson = x["lesson"]					
+				lesson = str(x["lesson"])					
 				logEntries = x["logDetails"]["logEntries"]
 				if len(logEntries) == 0: continue
 			

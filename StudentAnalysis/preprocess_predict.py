@@ -8,14 +8,13 @@ import glob
 from shutil import copyfile
 
 
-parser = argparse.ArgumentParser(description="Controller script that is used for downloading filtering and training system / evaulating users.")
+parser = argparse.ArgumentParser(description="")
 parser.add_argument('type', help="types of lessons", type=str)
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 					
 args = parser.parse_args()
 dates = args.date
 type = args.type
-print(dates)
 
 for file_name in glob.glob('tmp/users/logs/a/*_real.txt'):
 	new_file_name = "{}_tmp.txt".format(file_name[:-9])

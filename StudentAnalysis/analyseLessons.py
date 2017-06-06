@@ -31,7 +31,7 @@ i = 0
 j = 0
 
 users = {}
-users_path = "tmp/users/{}".format(args.d) # results will be stored on users_path location
+users_path = "tmp/users/{}.txt".format(args.d) # results will be stored on users_path location
 if os.path.isfile(users_path): # if there are saved weights for the lessons, set them as initial weights
 	with codecs.open(users_path, "r", "utf-8-sig") as fin:
 		for line in fin:
@@ -39,6 +39,8 @@ if os.path.isfile(users_path): # if there are saved weights for the lessons, set
 			a, b = a, float(b)
 			
 			users[a] = b
+else:
+	print("there is no file {}".fomrat(lessons_path))
 
 def get_entries_element(splited_entries, name):
 	"""
@@ -77,7 +79,7 @@ def score_lesson(lesson, score, user, percentage=1):
 	tmp[0] += fr(score) * ft(score) * fp(users[user])**score * percentage
 	tmp[1] += fr(score) * fp(users[user])**score
 	
-	d[lesson] = tmp
+	d[str(lesson)] = tmp
 	
 
 with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "utf-8-sig") as fin:
@@ -109,7 +111,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 				if not isCollaborative: # sve su kolaborativne
 					continue
 				
-				lesson = x["lesson"]					
+				lesson = str(x["lesson"])					
 				logEntries = x["logDetails"]["logEntries"]
 				if len(logEntries) == 0: continue
 			
