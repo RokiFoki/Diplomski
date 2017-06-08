@@ -47,6 +47,12 @@ analyse_lessons = {
 	"competitive": "analyseLessons_player.py",
 	"collaborative": "analyseLessons.py",
 }
+
+type_tag = {
+	"collaborative": "collaborative",
+	"AR": "AR",
+	"competitive": "player"
+}
 	
 with codecs.open(get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date]), "r", "utf-8-sig") as fin:
 	if args.e:
@@ -56,7 +62,8 @@ with codecs.open(get_file_name_from_dates("dates_{}".format(args.type), [args.st
 			
 			execute_python_script("download.py", [args.type, date, "-ip", args.ip, "-port", args.port, "-db", args.db])
 			execute_python_script(preprocess[args.type], [date])
-			execute_python_script(analyse_users[args.type], [date, "-d", "lessons.txt", "-r", get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="")])
+			execute_python_script(analyse_users[args.type], [date, "-d", "lessons", "-r", 
+				get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="_{}".format(type_tag[args.type]))])
 		
 		dates = " ".join([date.strip() for date in dates_lines])
 		execute_python_script("preprocess_predict.py", [args.type, dates])

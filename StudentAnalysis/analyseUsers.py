@@ -40,7 +40,7 @@ if os.path.isfile(lessons_path): # if there are saved weights for the lessons us
 			
 			lessons[a] = b
 else:
-	print("there is no file {}".fomrat(lessons_path))
+	print("there is no file {}".format(lessons_path))
 		
 def get_entries_element(splited_entries, name):
 	"""

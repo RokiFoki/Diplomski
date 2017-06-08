@@ -40,7 +40,7 @@ if os.path.isfile(users_path): # if there are saved weights for the lessons, set
 			
 			users[a] = b
 else:
-	print("there is no file {}".fomrat(lessons_path))
+	print("there is no file {}".format(lessons_path))
 
 def get_entries_element(splited_entries, name):
 	"""
@@ -296,7 +296,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 print(i, j)
 print("reading finished")
 
-with codecs.open('tmp/lessons/lessons.txt', "w", 'utf-8-sig') as fout:
+with codecs.open('tmp/lessons/{}.txt'.format(args.r), "w", 'utf-8-sig') as fout:
 	for lesson in sorted(d.keys()):
 		print(lesson, d[lesson][0], d[lesson][1], d[lesson][0]/ d[lesson][1])
 		fout.write("{}:{}\n".format(lesson, d[lesson][0] / d[lesson][1]))

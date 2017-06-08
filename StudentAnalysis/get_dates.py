@@ -42,11 +42,16 @@ cursor = conn.cursor()
 
 def generate_query(type, starting_date, ending_date):	
 	query = '''
-	SELECT DISTINCT CONVERT(VARCHAR(11),ContextualInfo.[Time],104) FROM LogEvent
-	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
-	WHERE 
-	{} 
-	AND (ContextualInfo.Time BETWEEN '{}/{}/{}' and '{}/{}/{} 23:59:59')
+	SELECT 
+		time
+	FROM (
+		SELECT DISTINCT CONVERT(VARCHAR(11),ContextualInfo.[Time],104) as time FROM LogEvent
+		JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
+		WHERE 
+		{} 
+		AND (ContextualInfo.Time BETWEEN '{}/{}/{}' and '{}/{}/{} 23:59:59')
+	) as temp
+	ORDER BY CONVERT(DATETIME, time, 104)
 	'''.format(type_constraint[type], starting_date.month, starting_date.day, starting_date.year, ending_date.month, ending_date.day, ending_date.year)
 	
 	return query
