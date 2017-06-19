@@ -23,6 +23,7 @@ parser.add_argument('-ed', help="Ending date (dd.mm.YYYY)", default=datetime.now
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
 parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-f', help="Take first", type=int)
 					
 args = parser.parse_args()
 
@@ -41,8 +42,10 @@ print("successfully connected to server (IP:{}, username:{} DBname:{})".format(I
 cursor = conn.cursor()
 
 def generate_query(type, starting_date, ending_date):	
+	first = "TOP {}".format(args.f) if args.f else ""
+
 	query = '''
-	SELECT 
+	SELECT {}
 		time
 	FROM (
 		SELECT DISTINCT CONVERT(VARCHAR(11),ContextualInfo.[Time],104) as time FROM LogEvent
@@ -52,7 +55,7 @@ def generate_query(type, starting_date, ending_date):
 		AND (ContextualInfo.Time BETWEEN '{}/{}/{}' and '{}/{}/{} 23:59:59')
 	) as temp
 	ORDER BY CONVERT(DATETIME, time, 104)
-	'''.format(type_constraint[type], starting_date.month, starting_date.day, starting_date.year, ending_date.month, ending_date.day, ending_date.year)
+	'''.format(first, type_constraint[type], starting_date.month, starting_date.day, starting_date.year, ending_date.month, ending_date.day, ending_date.year)
 	
 	return query
 	

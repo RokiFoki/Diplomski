@@ -18,33 +18,37 @@ type = args.type
 
 type_tag = {
 	"collaborative": "",
-	"AR": "AR",
-	"competitive": ""
+	"AR": "_AR",
+	"competitive": "_player"
 }
 
 users = set()
 
 print("copying _real files")
-for file_name in glob.glob('tmp/users/logs/a/*_real.txt'):
+for file_name in glob.glob('tmp/users/results/*_real.txt'):
 	new_file_name = "{}_tmp.txt".format(file_name[:-9])
 	copyfile(file_name, new_file_name)
 
-
+i = 0
 print("copying _real files to _tmp files")
 for date in dates:
-	file = get_file_name_from_dates("users", [date], prefix="tmp/users/logs/", suffix="_{}.txt".format(type))
+	file = get_file_name_from_dates("users", [date], prefix="tmp/users/logs/", suffix="{}.txt".format(type_tag[type]))
 
 	if os.path.isfile(file):
 		with codecs.open(file, "r", "utf-8-sig") as flog:
 			for line in flog:
 				user, grade = line.strip().split(":")
 				
-				with open("tmp/users/results/{}_{}_tmp.txt".format(user, type), "a") as fuser:
+				with open("tmp/users/results/{}{}_tmp.txt".format(user, type_tag[type]), "a") as fuser:
 					fuser.write("{}:{}\n".format(date.strftime("%d.%m.%Y"), grade))
 
 				users.add(user)
-	
 
+				i += 1
+	
+print("finished ({} changes)".format(i))
+
+i = 0
 print("create _real files")
 for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
 	new_file_name = "{}_real.txt".format(file_name[:-8])	
@@ -62,9 +66,12 @@ for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
 		for date in student_dates:
 			date_str = date.strftime("%d.%m.%Y")
 			f.write("{}:{}\n".format(date_str, d[date_str]))
+
+	i += 1
 			
 	os.remove(file_name)
 
+print("finished ({} changes)".format(i))
 
 with codecs.open(get_file_name_from_dates('users', dates), 'w', "utf-8-sig") as f:
 	for user in users:

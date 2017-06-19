@@ -1,48 +1,31 @@
+import pymssql
 import codecs
 import time
-import re
+import argparse
+import os
+from utils import get_file_name_from_dates
+from datetime import datetime
 
-d = dict()
+IP = str("161.53.18.12")+":"+str(1955)
+username = 'roko'
+password = 'g546z6rhtf'
+DBname = "ExperientialSamplingAnalyticsDev2"
 
-start_time = time.time()
-with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
-	for i, line in enumerate(fin):
-		if time.time() - start_time > 10:
-			print("i", i)
-			start_time = time.time()
-			
-		
-		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)
-		
-		try:			
-			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
-			
-			name = name.strip()
-				
-		except:
-			print("cant parse:")
-			print(line)
-			break
-			
-		#params = eval(JSONParams)
-		
-		if "A:" in JSONParams or "E:" in JSONParams or "C:" in JSONParams:
-			try:
-				m = re.search(".*(\[.*;[^]]*\]).*", JSONParams)
-			
-				upitno = m.group(1)
-				upitno2 = upitno[2:-2].split(";")
-				
-				n = len(upitno2)
-				upitno2 = upitno2[0: n//2]
-				
-				
-				d[str(upitno2)] = upitno
-			except AttributeError:
-				pass
-				
-				
-print("prining dict (size: {})".format(len(d)))
-for key in d:
-	print(key, d[key])
-	print()
+conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
+print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
+
+cursor = conn.cursor()  
+
+query = """
+	SELECT ContextualInfo.Time, [User].Name, LogEvent.EventName, LogEvent.EventType, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams) 
+	FROM LogEvent 
+	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
+	JOIN [User] ON ContextualInfo.UserId = [User].Id
+	WHERE ContextualInfo.Time BETWEEN '12/7/2016' and '12/7/2016 23:59:59'
+"""
+
+print(query)
+
+cursor.execute(query)
+for row in cursor:
+	print(row)

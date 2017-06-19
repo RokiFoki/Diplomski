@@ -11,6 +11,7 @@ parser.add_argument('type', help="types of lessons", type=str)
 
 parser.add_argument('starting_date', help="Starting date (dd.mm.YYYY)", default=datetime(1990, 1, 1), type=lambda x: datetime.strptime(x, '%d.%m.%Y'))
 parser.add_argument('ending_date', help="Ending date (dd.mm.YYYY)", default=datetime.now(), type=lambda x: datetime.strptime(x, '%d.%m.%Y'))
+parser.add_argument('-f', help="Take top T elements if there are more", type=int)
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
@@ -23,7 +24,10 @@ action.add_argument('-e', help='evaluate users\' score', action='store_true')
 args = parser.parse_args()
 
 # get all dates in range	
-execute_python_script("get_dates.py", ["-types", args.type, "-sd", args.starting_date.strftime("%d.%m.%Y"), "-ed", args.ending_date.strftime("%d.%m.%Y"), "-ip", args.ip, "-port", args.port, "-db", args.db])
+arguments = ["-types", args.type, "-sd", args.starting_date.strftime("%d.%m.%Y"), "-ed", args.ending_date.strftime("%d.%m.%Y"), "-ip", args.ip, "-port", args.port, "-db", args.db]
+if args.f: arguments += ["-f", args.f]
+
+execute_python_script("get_dates.py", arguments)
 
 dates_file_name = get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date])
 if not os.path.isfile(get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date])):
@@ -63,7 +67,7 @@ with codecs.open(get_file_name_from_dates("dates_{}".format(args.type), [args.st
 			execute_python_script("download.py", [args.type, date, "-ip", args.ip, "-port", args.port, "-db", args.db])
 			execute_python_script(preprocess[args.type], [date])
 			execute_python_script(analyse_users[args.type], [date, "-d", "lessons", "-r", 
-				get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="_{}".format(type_tag[args.type]))])
+				get_file_name_from_dates("users", [datetime.strptime(date, "%d.%m.%Y")], suffix="")])
 		
 		dates = " ".join([date.strip() for date in dates_lines])
 		execute_python_script("preprocess_predict.py", [args.type, dates])
