@@ -10,23 +10,21 @@ from shutil import copyfile
 
 import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
 parser = argparse.ArgumentParser(description="")
-parser.add_argument('type', help="types of lessons", type=str)
+parser.add_argument('type', help="type of lessons. Allowed types: collaborative, competitive, AR", type=str)
 
 parser.add_argument('name', help="name of the student", type=str)
 					
 args = parser.parse_args()
 
-
-import tensorflow as tf
 type = args.type
 name = args.name
 
 learning_rate = 0.01
 training_epochs = 1000
 display_step = 50
-
 
 
 file_name = 'tmp/users/results/{}_{}_real.txt'.format(name, type)
@@ -68,5 +66,8 @@ if os.path.isfile(file_name.format(name, type)):
 			plt.plot(indexes, sess.run(pred, feed_dict={X: indexes, Y: grades}), label="Trained data")	
 			plt.legend()
 			plt.show()
+			
+			print("Trained parameters:")
+			print("C:{}, b:{}, B:{}".format(C_trained, b_trained, B_trained))
 
 		
