@@ -14,8 +14,8 @@ import os
 from utils import get_file_name_from_dates
 from datetime import datetime
 
-parser = argparse.ArgumentParser(description="Downloads logs from specified dates.")
-parser.add_argument('type', help="lesson type", type=str)
+parser = argparse.ArgumentParser(description="Downloads logs from specified dates for specified type.")
+parser.add_argument('type', help="lesson type. Allowed types: collaborative, competitive, AR", type=str)
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)

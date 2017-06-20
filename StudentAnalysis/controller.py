@@ -6,12 +6,12 @@ import time
 import codecs
 
 # -------------------- parsing arguments ---------------------------------- #
-parser = argparse.ArgumentParser(description="Controller script that is used for downloading filtering and training system / evaulating users.")
-parser.add_argument('type', help="types of lessons", type=str)
+parser = argparse.ArgumentParser(description="Controller script that is used for downloading, filtering and training system / evaulating users.")
+parser.add_argument('type', help="type of lessons. Allowed types: collaborative, competitive, AR", type=str)
 
 parser.add_argument('starting_date', help="Starting date (dd.mm.YYYY)", default=datetime(1990, 1, 1), type=lambda x: datetime.strptime(x, '%d.%m.%Y'))
 parser.add_argument('ending_date', help="Ending date (dd.mm.YYYY)", default=datetime.now(), type=lambda x: datetime.strptime(x, '%d.%m.%Y'))
-parser.add_argument('-f', help="Take top T elements if there are more", type=int)
+parser.add_argument('-f', help="Take first F elements", type=int)
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
