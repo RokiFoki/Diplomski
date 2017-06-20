@@ -8,8 +8,8 @@ import glob
 from shutil import copyfile
 
 
-parser = argparse.ArgumentParser(description="")
-parser.add_argument('type', help="types of lessons", type=str)
+parser = argparse.ArgumentParser(description="script that extracts students data from date stored data")
+parser.add_argument('type', help="type of lessons. Allowed types: collaborative, competitive, AR", type=str)
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 					
 args = parser.parse_args()

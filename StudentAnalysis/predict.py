@@ -8,7 +8,6 @@ import glob
 from shutil import copyfile
 
 
-import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -18,6 +17,9 @@ parser.add_argument('type', help="types of lessons", type=str)
 parser.add_argument('name', help="name of the student", type=str)
 					
 args = parser.parse_args()
+
+
+import tensorflow as tf
 type = args.type
 name = args.name
 

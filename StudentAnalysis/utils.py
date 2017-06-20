@@ -23,3 +23,15 @@ def get_file_name_from_dates(base_name, dates, prefix="logs/", suffix=".txt"):
 		"{}-{}_({})".format(dates[0].strftime("%d-%m-%Y"), dates[-1].strftime("%d-%m-%Y"), len(dates)),
 		suffix
 	)
+	
+def get_value_from_file(file_name, key):
+	result = ""
+	with open(file_name, "r") as f:
+		for line in f:
+			key_, value_ = line.strip().split("=")
+			
+			if key == key_:
+				result = value_
+				break
+	
+	return result

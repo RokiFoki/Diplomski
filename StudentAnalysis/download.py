@@ -11,7 +11,7 @@ import codecs
 import time
 import argparse
 import os
-from utils import get_file_name_from_dates
+from utils import get_file_name_from_dates, get_value_from_file
 from datetime import datetime
 
 parser = argparse.ArgumentParser(description="Downloads logs from specified dates for specified type.")
@@ -25,8 +25,8 @@ parser.add_argument('-db', help="Database name", default="ExperientialSamplingAn
 args = parser.parse_args()
 
 IP = args.ip+":"+str(args.port)
-username = 'roko'
-password = 'g546z6rhtf'
+username = get_value_from_file('config.txt', 'username')
+password = get_value_from_file('config.txt', 'password')
 DBname=args.db
 
 file_type ={
