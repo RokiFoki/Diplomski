@@ -80,72 +80,137 @@ def score_lesson(lesson, score, user, percentage=1): # bitno, prije je bio if ri
 	
 dict_student_problem = {}
 with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "utf-8-sig") as fin:
-		for line in fin:
-			i += 1	
-			if time.time() - start_time > 10: 
-				print("i", i)
-				start_time = time.time()		
-					
-			m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+	for line in fin:
+		i += 1	
+		if time.time() - start_time > 10: 
+			print("i", i)
+			start_time = time.time()		
+				
+		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
-			try:			
-				name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
-				
-				name = name.strip()
-				
-				year, month, day, hour, min, sec, ms = [int(item) for item in datetime.split(', ')]
-				
-				datetime = "{} {} {}".format(year, month, day)
-				
-				key = "{},{}".format(name, datetime)
-				
-			except:
-				import traceback
-				print("cant parse:")
-				print(line)
-				traceback.print_exc()
-				break
+		try:			
+			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 			
-			try:	
+			name = name.strip()
+			
+			year, month, day, hour, min, sec, ms = [int(item) for item in datetime.split(', ')]
+			
+			datetime = "{} {} {}".format(year, month, day)
+			
+			key = "{},{}".format(name, datetime)
+			
+		except:
+			import traceback
+			print("cant parse:")
+			print(line)
+			traceback.print_exc()
+			break
+		
+		try:	
+			params = eval(JSONParams)
+			
+			lesson = params["lesson"]
+			key = "{},{},{}".format(name, lesson, datetime)
+
+			def store_log(log):
+				global dict_student_problem, key
+
+				problems = dict_student_problem.get(key, set())
+				problems.add(str(log))
+				dict_student_problem[key] = problems
+
+			def collect():
+				global j, k
 				params = eval(JSONParams)
-				
+
 				lesson = params["lesson"]
-				key = "{},{},{}".format(name, lesson, datetime)
 				if isinstance(params["logDetails"], list):
-					continue
+					for answer in params["logDetails"]:
+						if "correct" in answer:
+							store_log(answer)
+						elif "problem" in answer:
+							problem = answer["problem"]
+							if "correct" in problem:
+								store_log(problem)
 						
 							
-				elif(isinstance(params["logDetails"], dict)):
+				elif(isinstance(params["logDetails"], dict)):					
 					logDetails = params["logDetails"]
-					if "inputParams" in logDetails:
-						
-						if "isCollaborative" in logDetails["inputParams"] and logDetails["inputParams"]["isCollaborative"]: continue
+					if "inputParams" in logDetails:						
+						if "isCollaborative" in logDetails["inputParams"] and logDetails["inputParams"]["isCollaborative"]:
+							return
 											
 						if "logEntries" in logDetails:
-							for logEntry in  logDetails["logEntries"]:
-								if "problem" in logEntry:
-									if "confirmSolution" not in logEntry["problem"] and "needToDiscuss" not in logEntry["problem"] and "waitingForChecker" not in logEntry["problem"]:
-										problems = dict_student_problem.get(key, set())
-										problems.add(str(logEntry["problem"]))
-										dict_student_problem[key] = problems
-						else:
-							problems = dict_student_problem.get(key, set())
-							problems.add(str(logEntry["problem"]))
-							dict_student_problem[key] = problems
-					
+							for logEntry in logDetails["logEntries"]:
+								if(isinstance(logEntry, list)):
+									for entry in logEntry:
+										if "answers" in entry:
+											for answer in entry["answers"]:
+												if "correct" in answer:
+													store_log(answer)
+								else:
+									if "problem" in logEntry:
+										problem = logEntry["problem"]
+										if "correct" in problem:
+											store_log(problem)
+
+									elif "answers" in logEntry:
+										answers = logEntry["answers"]
+										if isinstance(answers, list):
+											for answer in answers:
+												if "correct" in answer:
+													store_log(answer)
+
+
+						elif "logEntry" in logDetails:
+							logEntry = logDetails["logEntry"]
+							if "problem" in logEntry:
+								problem = logEntry["problem"]
+								if "correct" in problem:
+									store_log(problem)
+								
+					else:
+						if "data" in logDetails:
+							data = logDetails["data"]
+							if "partial_logEntries" in data:
+								partial_logEntries = data["partial_logEntries"]
+								if(isinstance(partial_logEntries, list)):
+									for entry in partial_logEntries:
+										if "problem" in entry:
+											problem = entry["problem"]
+											if "correct" in problem:
+												store_log(problem)
+											else:
+												pass
+												# first, second third part
+
+						elif "gameLog" in logDetails:
+							gameLog = logDetails["gameLog"]
+							if "logEntries" in gameLog:
+								logEntries = gameLog["logEntries"]
+								if isinstance(logEntries, list):
+									for logEntry in logEntries:
+										if "correct" in logEntry:
+											store_log(logEntry)
+							else:
+								if isinstance(gameLog, list):
+									for entry in gameLog:
+										if "correct" in entry:
+											store_log(entry)			
+
+			collect()		
 				
-					
-			except Exception as e:
-				import traceback
-				print("PROBLEM OCCURED", i, e)
-				print(line)
+		except Exception as e:
+			import traceback
+			print("PROBLEM OCCURED", i, e)
+			print(line)
+			
+			traceback.print_exc()
+			exit()
+			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
+				fout.write(JSONParams+"\n")
 				
-				traceback.print_exc()
-				exit()
-				with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
-					fout.write(JSONParams+"\n")
-					
-				break
+			break
 				
 		
 			
