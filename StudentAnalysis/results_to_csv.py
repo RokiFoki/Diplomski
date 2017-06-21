@@ -32,10 +32,16 @@ for file_name in glob.glob(first_part+"*"+second_part):
 	file_name = file_name[starting_index:-ending_index]
 
 	student_name, log_type = get_name_and_type(file_name)
-	names.add(student_name)
+	
+	if " " in student_name:
+		names.add(student_name)
 
 
-names = sorted(names)
+def select(name):
+	t = name.split()
+	return t[1:] + [t[0]]
+
+names = sorted(names, key=select)
 for student_name in names:
 	if student_name not in table: table[student_name] = {}
 
