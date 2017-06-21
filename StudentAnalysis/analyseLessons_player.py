@@ -93,7 +93,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			
 			name = name.strip()
 			
-			year, month, day, hour, min, sec, ms = [int(item) for item in datetime.split(', ')]
+			year, month, day, *rest = [int(item) for item in datetime.split(', ')]
 			
 			datetime = "{} {} {}".format(year, month, day)
 			
@@ -206,11 +206,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			print(line)
 			
 			traceback.print_exc()
-			exit()
-			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
-				fout.write(JSONParams+"\n")
-				
-			break
+			exit(1)
 				
 		
 			
@@ -226,7 +222,8 @@ for key in dict_student_problem:
 	name, lesson, date = key.split(',')
 	for problem in dict_student_problem[key]:
 		problem = eval(problem)
-		score_lesson(lesson, problem["correct"], name)
+		if problem["correct"] == True or problem["correct"] == False:
+			score_lesson(lesson, problem["correct"], name)
 	
 	
 with codecs.open('tmp/lessons/{}_player.txt'.format(args.r), "w", 'utf-8-sig') as fout:

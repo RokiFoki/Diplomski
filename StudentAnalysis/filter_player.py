@@ -158,10 +158,6 @@ with codecs.open(get_file_name_from_dates('logs_player', dates), 'r', "utf-8-sig
 				
 				traceback.print_exc()
 				exit()
-				with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
-					fout.write(JSONParams+"\n")
-					
-				break
 				
 		
 			

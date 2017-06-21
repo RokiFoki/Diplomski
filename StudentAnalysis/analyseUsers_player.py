@@ -86,7 +86,8 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 		if time.time() - start_time > 10: 
 			print("i", i)
 			start_time = time.time()		
-				
+								
+
 		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
 		try:			
@@ -94,7 +95,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			
 			name = name.strip()
 			
-			year, month, day, hour, min, sec, ms = [int(item) for item in datetime.split(', ')]
+			year, month, day, *rest = [int(item) for item in datetime.split(', ')]
 			
 			datetime = "{} {} {}".format(year, month, day)
 			
@@ -105,7 +106,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			print("cant parse:")
 			print(line)
 			traceback.print_exc()
-			break
+			exit()
 		
 		try:	
 			params = eval(JSONParams)
@@ -207,11 +208,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			print(line)
 			
 			traceback.print_exc()
-			exit()
-			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
-				fout.write(JSONParams+"\n")
-				
-			break
+			exit(1)
 				
 		
 			
@@ -226,7 +223,10 @@ for key in dict_student_problem:
 	name, lesson, date = key.split(',')
 	for problem in dict_student_problem[key]:
 		problem = eval(problem)
-		score_user(name, problem["correct"], lesson)
+		if problem["correct"] != True and problem["correct"] != False:
+			print(problem)
+		else:
+			score_user(name, problem["correct"], lesson)
 	
 	
 with codecs.open('tmp/users/{}_player.txt'.format(args.r), "w", 'utf-8-sig') as fout:
