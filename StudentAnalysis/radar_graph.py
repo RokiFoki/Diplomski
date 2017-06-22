@@ -120,7 +120,7 @@ def plot_chart_plot(data, labels, colors, names=None):
 		return
 	
 	theta = radar_factory(N, frame='circle')
-	fig, ax = plt.subplots(figsize=(3, 3), nrows=1, ncols=1,
+	fig, ax = plt.subplots(figsize=(7, 7), nrows=1, ncols=1,
 							 subplot_kw=dict(projection='radar'))
 	
 	ax.set_rgrids([0.25, 0.5, 0.75])
