@@ -6,7 +6,7 @@ from radar_graph import plot_chart_plot
 import argparse
 import os
 
-parser = argparse.ArgumentParser(description="calculates and dosplays student profile")
+parser = argparse.ArgumentParser(description="calculates and displays student profile")
 parser.add_argument('names', metavar="name", help="name of the student", type=str, nargs="+")
 				
 args = parser.parse_args()

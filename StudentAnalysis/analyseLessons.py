@@ -15,7 +15,7 @@ from utils import get_file_name_from_dates
 from datetime import datetime
 import argparse
 
-parser = argparse.ArgumentParser(description="?????.")
+parser = argparse.ArgumentParser(description="calculates lesson weight from collaborative logs defined with specified dates.")
 
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 parser.add_argument('-i', help="image file name", type=str, metavar="IMG")

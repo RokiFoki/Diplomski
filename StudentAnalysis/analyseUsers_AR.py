@@ -15,7 +15,7 @@ from utils import get_file_name_from_dates
 from datetime import datetime
 import argparse
 
-parser = argparse.ArgumentParser(description="?????.")
+parser = argparse.ArgumentParser(description="calculates student success from AR logs defined with specified dates")
 
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
 parser.add_argument('-i', help="image file name (no extension)", type=str, metavar="IMG")
