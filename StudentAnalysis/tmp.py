@@ -23,3 +23,13 @@ for file_name in glob.glob("tmp/users/results/*_real.txt"):
 
 for result in sorted(results):
 	print(result)
+
+	
+	
+from radar_graph import plot_chart_plot
+
+plot_chart_plot(
+		[[0.88, 0.50, 0.33]],
+		['competitive', 'collaborative', 'AR'],
+		['b', 'r', 'g', 'm', 'y']
+	)
