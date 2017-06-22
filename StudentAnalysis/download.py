@@ -11,7 +11,7 @@ import codecs
 import time
 import argparse
 import os
-from utils import get_file_name_from_dates, get_value_from_file
+from utils import get_file_name_from_dates, get_value_from_file, type_constraint
 from datetime import datetime
 
 parser = argparse.ArgumentParser(description="Downloads logs from specified dates for specified type.")
@@ -46,13 +46,6 @@ print("successfully connected to server (IP:{}, username:{} DBname:{})".format(I
 cursor = conn.cursor()  
 
 def generate_query(dates, type):
-	type_constraint = {
-	"collaborative": '''JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' ''',
-	#"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND JSONparams NOT LIKE '%waitingForChecker%' AND JSONparams NOT LIKE '%confirmSolution%' AND JSONparams NOT LIKE '%needToDiscuss%'  ''',
-	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND LEN(CONVERT(NVARCHAR(MAX), LogEvent.JSONparams)) > 250 ''',
-	"AR": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType LIKE 'AR%' '''
-	}
-
 	query = '''
 	SELECT [User].Name, LogEvent.Id, LogEvent.EventName, LogEvent.EventType, LogEvent.Time, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams), LogEvent.ContextualInfoId FROM LogEvent 
 	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id

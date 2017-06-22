@@ -5,6 +5,12 @@ import codecs
 command = "python3"
 tries = 0
 
+type_constraint = {
+	"collaborative": '''JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' ''',
+	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND LEN(CONVERT(NVARCHAR(MAX), LogEvent.JSONparams)) > 250 ''',
+	"AR": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType LIKE 'AR%' '''
+}
+
 def execute_python_script(name, params):
 	global command, tries
 	

@@ -4,15 +4,11 @@ import argparse
 import time
 from datetime import datetime
 
-from utils import get_file_name_from_dates
+from utils import get_file_name_from_dates, type_constraint
 
 allowed_types = ["competitive", "collaborative", "AR"]
-type_constraint = {
-	"collaborative": '''JSONparams LIKE '{"lesson":%isCollaborative%' AND eventName = 'widget_log' ''',
-	#"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' AND JSONparams NOT LIKE '%waitingForChecker%' AND JSONparams NOT LIKE '%confirmSolution%' AND JSONparams NOT LIKE '%needToDiscuss%'  ''',
-	"competitive": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType = 'Player' AND LogEvent.EventName = 'widget_log' ''',
-	"AR": '''JSONparams LIKE '%{%}%' AND LogEvent.EventType LIKE 'AR%' '''
-}
+
+
 
 parser = argparse.ArgumentParser(description="Gets relevant dates for types of lessons.")
 parser.add_argument('-types', help="types of lessons", default=allowed_types, type=str, nargs='*')
@@ -73,6 +69,7 @@ for type in args.types:
 	print("writing to {}".format('dates_{}.txt'.format(type)))
 	with codecs.open(file_name, 'w', "utf-8-sig") as f:
 		for row in cursor:	
+			print(row[0])
 			i += 1
 			if time.time() - start_time > 10: 
 				start_time = time.time()
