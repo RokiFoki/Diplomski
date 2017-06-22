@@ -1,31 +1,25 @@
-import pymssql
-import codecs
 import time
-import argparse
-import os
-from utils import get_file_name_from_dates
-from datetime import datetime
+import codecs
+import glob
 
-IP = str("161.53.18.12")+":"+str(1955)
-username = 'roko'
-password = 'g546z6rhtf'
-DBname = "ExperientialSamplingAnalyticsDev2"
+results = []
 
-conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
-print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
+for file_name in glob.glob("tmp/users/results/*_real.txt"):
+	with open(file_name, "r") as f:
+		grades = [float(line.strip().split(":")[1]) for line in f.readlines()]
 
-cursor = conn.cursor()  
+		points = 0.0
+		last = -1.0
+		for grade in grades:
+			if last < grade:
+				points += 1
+			elif last > grade:
+				points -= 1
 
-query = """
-	SELECT ContextualInfo.Time, [User].Name, LogEvent.EventName, LogEvent.EventType, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams) 
-	FROM LogEvent 
-	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
-	JOIN [User] ON ContextualInfo.UserId = [User].Id
-	WHERE ContextualInfo.Time BETWEEN '12/7/2016' and '12/7/2016 23:59:59'
-"""
+			last = grade
 
-print(query)
+		results += [(points, grades, file_name)]
 
-cursor.execute(query)
-for row in cursor:
-	print(row)
+
+for result in sorted(results):
+	print(result)

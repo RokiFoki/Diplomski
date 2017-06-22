@@ -12,25 +12,32 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-parser = argparse.ArgumentParser(description="")
+parser = argparse.ArgumentParser(description="aproximates data collected from file with a Stanford-B model learning curve function and displays it")
 parser.add_argument('type', help="type of lessons. Allowed types: collaborative, competitive, AR", type=str)
-
 parser.add_argument('name', help="name of the student", type=str)
-					
+parser.add_argument('-lr', help="learning rate", type=float, default=0.01)
+parser.add_argument('-te', help="number of training epoches", type=int, default=1000)
+parser.add_argument('-ds', help="every 'display step' of iteration lost is displayed", type=float, default=100)
+				
 args = parser.parse_args()
 
 type = args.type
 name = args.name
 
-learning_rate = 0.01
-training_epochs = 1000
-display_step = 50
+learning_rate = args.lr
+training_epochs = args.te
+display_step = args.ds
 
+file_type ={
+	"collaborative" : "",
+	"AR" : "_AR",
+	"competitive" : "_player"
+}
 
-file_name = 'tmp/users/results/{}_{}_real.txt'.format(name, type)
-if os.path.isfile(file_name.format(name, type)):
+file_name = 'tmp/users/results/{}{}_real.txt'.format(name, file_type[type])
+if os.path.isfile(file_name):
 	with open(file_name) as fin:
-		grades = np.array([line.strip().split(":")[1] for line in fin.readlines()])
+		grades = np.array([float(line.strip().split(":")[1]) for line in fin.readlines()])
 		indexes = np.arange(1, len(grades)+1)
 
 		X = tf.placeholder(tf.float32)
@@ -63,11 +70,25 @@ if os.path.isfile(file_name.format(name, type)):
 			C_trained, b_trained, B_trained = sess.run([C, b, B])
 
 			plt.plot(indexes, grades, "ro", label="Original data")
-			plt.plot(indexes, sess.run(pred, feed_dict={X: indexes, Y: grades}), label="Trained data")	
-			plt.legend()
+
+			min_x = 1
+			max_x = indexes[-1]+2
+			x_range = np.arange(min_x, max_x+1)
+
+			predicted = sess.run(pred, feed_dict={X: x_range})
+
+			min_y = max(0, min(min(predicted), min(grades))-0.05)
+			max_y = min(1, max(max(predicted), max(grades))+0.05)
+
+			plt.plot(x_range, predicted, label="Trained data")	
+			
+			plt.axis([min_x, max_x, min_y, max_y])
+			plt.legend(loc=0)
 			plt.show()
+
 			
 			print("Trained parameters:")
 			print("C:{}, b:{}, B:{}".format(C_trained, b_trained, B_trained))
 
-		
+else:
+	print("file {} not found".format(file_name))
