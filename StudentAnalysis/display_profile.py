@@ -6,6 +6,7 @@ from radar_graph import plot_chart_plot
 from utils import get_value_from_file
 import argparse
 import os
+import pymssql
 
 parser = argparse.ArgumentParser(description="calculates and displays student profile")
 parser.add_argument('names', metavar="name", help="name of the student", type=str, nargs="+")
@@ -16,9 +17,8 @@ parser.add_argument('-db', help="Database name", default="ExperientialSamplingAn
 args = parser.parse_args()
 
 names = args.names
-ip = args.ip
-port = args.port
-db = args.db
+IP = args.ip+":"+str(args.port)
+DBname = args.db
 username = get_value_from_file('config.txt', 'username')
 password = get_value_from_file('config.txt', 'password')
 
@@ -36,7 +36,7 @@ type_indicators = {
 
 type_sql_collumns = {
 	"collaborative": "collaborative_score",
-	"AR", "AR_score",
+	"AR": "AR_score",
 	"competitive": "competitive_score"
 }
 
@@ -58,35 +58,35 @@ for name in names:
 	grades.append(student_grades)
 
 
-conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
-print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
+	conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
+	print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
 
-cursor = conn.cursor()  
+	cursor = conn.cursor()  
 
 
-query = """ 
-DECLARE @user_id int
-SELECT TOP 1 @user_id = Id from [User] where Name =  {6}
+	query = """ 
+	DECLARE @user_id int
+	SELECT TOP 1 @user_id = Id from [User] where Name =  '{6}'
 
-begin tran
+	begin tran
 
-	update UserTypeScores set {0}={3}, {1}={4}, {2}={5}
-	where UserId = @user_id and [date] = '{7}'
+		update UserTypeScores set {0}={3}, {1}={4}, {2}={5}
+		where UserId = @user_id and [date] = {7}
 
-	if @@rowcount = 0
-	begin
-		insert into UserTypeScores (UserId, {0}, {1}, {2}, [date])
-		values (@user_id, {3}, {4}, {5}, '{7}')
-	end
+		if @@rowcount = 0
+		begin
+			insert into UserTypeScores (UserId, {0}, {1}, {2}, [date])
+			values (@user_id, {3}, {4}, {5}, {7})
+		end
 
-commit tran
+	commit tran
 
-""".format(*types, *grdes, name, "null")
+	""".format(*[ type_sql_collumns[type] for type in types], *student_grades, name, "null")
 
-print("executing query ({})".format(query))
+	print("executing query ({})".format(query))
 
-cursor.execute(query)
-print("query executed") 
+	cursor.execute(query)
+	print("query executed") 
 
 plot_chart_plot(
 	grades,
