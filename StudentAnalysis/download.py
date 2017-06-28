@@ -47,7 +47,7 @@ cursor = conn.cursor()
 
 def generate_query(dates, type):
 	query = '''
-	SELECT [User].Name, LogEvent.Id, LogEvent.EventName, LogEvent.EventType, LogEvent.Time, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams), LogEvent.ContextualInfoId FROM LogEvent 
+	SELECT [User].Id, [User].Name, LogEvent.Id, LogEvent.EventName, LogEvent.EventType, LogEvent.Time, CONVERT(NVARCHAR(MAX), LogEvent.JSONparams), LogEvent.ContextualInfoId FROM LogEvent 
 	JOIN ContextualInfo ON LogEvent.ContextualInfoId = ContextualInfo.Id
 	JOIN [User] ON ContextualInfo.UserId = [User].Id
 	WHERE {} 

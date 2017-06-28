@@ -37,11 +37,12 @@ with codecs.open(get_file_name_from_dates('logs_player', dates), 'r', "utf-8-sig
 				print("i", i, "j", j)
 				start_time = time.time()		
 					
-			m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+			m = re.search("\(([0-9]+), '([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+
 
 
 			try:			
-				name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+				userid, name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 				
 				name = name.strip()
 					

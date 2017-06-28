@@ -86,21 +86,19 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 		if time.time() - start_time > 10: 
 			print("i", i)
 			start_time = time.time()		
-								
+									
+		m = re.search("\(([0-9]+), '([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
-		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
 		try:			
-			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+			userid, name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 			
 			name = name.strip()
 			
 			year, month, day, *rest = [int(item) for item in datetime.split(', ')]
 			
 			datetime = "{} {} {}".format(year, month, day)
-			
-			key = "{},{}".format(name, datetime)
-			
+						
 		except:
 			import traceback
 			print("cant parse:")
@@ -112,7 +110,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			params = eval(JSONParams)
 			
 			lesson = params["lesson"]
-			key = "{},{},{}".format(name, lesson, datetime)
+			key = "{},{},{}".format(userid, lesson, datetime)
 
 			def store_log(log):
 				global dict_student_problem, key
@@ -220,13 +218,13 @@ for string in sorted(s):
 
 print(len(dict_student_problem.keys()))
 for key in dict_student_problem:
-	name, lesson, date = key.split(',')
+	userid, lesson, date = key.split(',')
 	for problem in dict_student_problem[key]:
 		problem = eval(problem)
 		if problem["correct"] != True and problem["correct"] != False:
 			print(problem)
 		else:
-			score_user(name, problem["correct"], lesson)
+			score_user(userid, problem["correct"], lesson)
 	
 	
 with codecs.open('tmp/users/{}_player.txt'.format(args.r), "w", 'utf-8-sig') as fout:

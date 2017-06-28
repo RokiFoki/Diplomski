@@ -89,10 +89,11 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 			print("i", i)
 			start_time = time.time()	
 				
-		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+		m = re.search("\(([0-9]+), '([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+
 
 		try:			
-			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+			userid, name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 			
 			name = name.strip()
 				
@@ -150,7 +151,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 						problem = logEntrie["problem"]
 						
 						if "correct" in problem and problem["correct"] is not None:
-							score_lesson(lesson, problem["correct"], name)
+							score_lesson(lesson, problem["correct"], userid)
 						else:
 							if "fourthPart" in problem:
 								string = problem["firstPart"]+problem["secondPart"]+problem["thirdPart"]+"="+problem["fourthPart"]
@@ -163,13 +164,13 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 								first = eval(first)
 								second = eval(second)
 								
-								score_lesson(lesson, first == second, name)
+								score_lesson(lesson, first == second, userid)
 							except:
 								print(problem, problem["correct"] if "correct" in problem else  "??")
 								print(string)
 								print()
 								
-								score_lesson(lesson, False, name)
+								score_lesson(lesson, False, userid)
 				elif isinstance(logEntries[0], str): #there are 1657 of them, small logs
 					j += 1						
 					split_logEntries = logEntries[0].split(";")
@@ -228,9 +229,9 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 						second = eval(second)
 						
 						if role == 'E': #editor
-							score_lesson(lesson, first == second, name)
+							score_lesson(lesson, first == second, userid)
 						elif role == 'C': #checker ZERO TIMES!!!!!!!!!
-							score_lesson(lesson, first == second if checkerAnswer=="Ok" else first != second, name)
+							score_lesson(lesson, first == second if checkerAnswer=="Ok" else first != second, userid)
 					else:
 						try:
 							authorAnswer = get_entries_element(split_logEntries, "AuthorAnswer")
@@ -245,7 +246,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 						first = first.replace('·', '*').replace(':', '/')
 						
 						if role == 'A': # author zero times
-							score_lesson(lesson, authorAnswer == first, name)
+							score_lesson(lesson, authorAnswer == first, userid)
 						elif role == 'E': # editor 528 times
 							good = True
 							try:
@@ -255,15 +256,15 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 							
 							if good:
 								try:
-									score_lesson(lesson, authorA == eval(editorAnswer), name)
+									score_lesson(lesson, authorA == eval(editorAnswer), userid)
 								except:
-									score_lesson(lesson, False, name)
+									score_lesson(lesson, False, userid)
 						elif role == 'C': # checker ZERO times (not anymore??)
 							good = (authorAnswer == first and editorAnswer == eval(first))
 							
 							checkerGood = checkerAnswer == "Ok"
 							
-							score_lesson(lesson, checkerAnswer == good, name)
+							score_lesson(lesson, checkerAnswer == good, userid)
 							
 							
 						# for inx in range(len(split_logEntries) // 2):

@@ -65,12 +65,7 @@ for name in names:
 		
 
 	grades.append(student_grades)
-
-	#print(type_fun(float(student_grades[0])))
-	
-	#query = """save_user_profile 'ADRIAN HRUBI', 1, 1, 1, null"""
-	#cursor.execute(query)
-	
+		
 	print(name)
 	cursor.callproc("save_user_profile", (name, *[float(grade) for grade in student_grades], None,))
 	

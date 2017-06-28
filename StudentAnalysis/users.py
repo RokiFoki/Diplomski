@@ -18,11 +18,12 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 			print(i)
 			start_time = time.time()		
 				
-		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+		m = re.search("\(([0-9]+), '([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+
 
 		
 		try:			
-			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+			userid, name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 			
 		except:
 			print("cant parse:")
@@ -34,7 +35,7 @@ with codecs.open('logs_collaborative.txt', 'r', "utf-8-sig") as fin:
 			params = eval(JSONParams)
 			def wrapper(x): 
 				try: 
-					s.add(name.strip())
+					s.add(userid.strip())
 				except: 
 					pass
 			

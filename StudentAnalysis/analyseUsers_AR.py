@@ -81,10 +81,10 @@ with codecs.open(get_file_name_from_dates('logs_AR', dates), 'r', "utf-8-sig") a
 			print("i", i)
 			start_time = time.time()		
 				
-		m = re.search("\('([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
+		m = re.search("\(([0-9]+), '([^']+)', ([0-9]+), '([^']+)', '([^']+)', datetime\.datetime\(([^\)]+)\), '([^']+)', ([0-9]+)\)", line)	
 
 		try:			
-			name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
+			userid, name, id, eventName, eventType, datetime, JSONParams, contextualInfoId = m.groups();
 			
 			name = name.strip()
 				
@@ -124,7 +124,7 @@ with codecs.open(get_file_name_from_dates('logs_AR', dates), 'r', "utf-8-sig") a
 					miliseconds = max(elapsedSeconds - normal_miliseconds, 0)
 					penalty = penalty_miliseconds * (len(answers) - answerLen)
 					
-					score_user(name, 0 not in answeredAnswers, str(question), 1 - min(miliseconds + penalty, max_miliseconds) / max_miliseconds)
+					score_user(userid, 0 not in answeredAnswers, str(question), 1 - min(miliseconds + penalty, max_miliseconds) / max_miliseconds)
 			
 			if eventType == "AR.Shapes" and "answers" in params[0]:
 				for question in params:
@@ -154,7 +154,7 @@ with codecs.open(get_file_name_from_dates('logs_AR', dates), 'r', "utf-8-sig") a
 					
 					sovled, score = cal_score(answers)
 					
-					score_user(name, sovled, lesson, score)
+					score_user(userid, sovled, lesson, score)
 					
 			elif eventType == "AR.Shapes" and "answers" not in params[0]:
 				math_analyse(params)

@@ -21,6 +21,7 @@ def get_name_and_type(oname):
 	else:
 		log_type = "collaborative"
 
+	print(name, log_type)
 	return name, log_type
 
 
@@ -32,10 +33,10 @@ table = {}
 for file_name in glob.glob(first_part+"*"+second_part):
 	file_name = file_name[starting_index:-ending_index]
 
+	print(file_name)
 	student_name, log_type = get_name_and_type(file_name)
 	
-	if " " in student_name:
-		names.add(student_name)
+	names.add(student_name)
 
 
 execute_python_script("display_profile.py", ['"{}"'.format(name) for name in names])
