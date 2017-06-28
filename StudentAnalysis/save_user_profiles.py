@@ -1,6 +1,16 @@
 import glob
 from datetime import datetime
 from utils import execute_python_script
+import argparse
+
+parser = argparse.ArgumentParser(description="Saves and saves student profile to database")
+parser.add_argument('date', help="dated (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), default=datetime.now().strftime('%d.%m.%Y'), nargs='?')
+				
+args = parser.parse_args()
+
+date = args.date.strftime('%Y%m%d')
+
+print(date)
 
 first_part = "tmp/users/results/"
 second_part = "_real.txt"
@@ -39,7 +49,7 @@ for file_name in glob.glob(first_part+"*"+second_part):
 	names.add(student_name)
 
 
-execute_python_script("display_profile.py", ['"{}"'.format(name) for name in names])
+execute_python_script("display_profile.py", ['"{}"'.format(name) for name in names] + ["-date", date])
 
 	
 

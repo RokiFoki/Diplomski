@@ -14,6 +14,7 @@ parser.add_argument('-ip', help="IP address of the database", default="161.53.18
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
 parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
 parser.add_argument('-d', help='display graph localy', action='store_true')
+parser.add_argument('-date', help='date in YYYYMMDD format', type=str, default=None, nargs="?")
 				
 args = parser.parse_args()
 
