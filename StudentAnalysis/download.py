@@ -38,7 +38,7 @@ file_type ={
 file_name = get_file_name_from_dates(file_type[args.type], args.date)
 if os.path.isfile(file_name): 
 	print("file with name {} already exists".format(file_name))
-	exit(1)
+	exit(0)
 
 conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
 print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))

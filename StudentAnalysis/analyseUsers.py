@@ -137,9 +137,6 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 							
 					except ValueError:
 						# happened once, name = 'Učiteljica (zamjenski tablet)', members = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
-						
-						print(i, "PROBLEM:", name, 'is not in', members)
-						br += 1
 						continue
 					
 						

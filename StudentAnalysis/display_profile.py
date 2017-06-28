@@ -67,7 +67,7 @@ for name in names:
 	grades.append(student_grades)
 		
 	print(name)
-	cursor.callproc("SaveUserProfile", (name, 0.2, 0.4, 0.6, args.date,))
+	cursor.callproc("SaveUserProfile", (name, *[student_grades], args.date,))
 	
 	
 	print("query executed") 
