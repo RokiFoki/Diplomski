@@ -4,11 +4,9 @@ import argparse
 import time
 from datetime import datetime
 
-from utils import get_file_name_from_dates, type_constraint
+from utils import get_file_name_from_dates, type_constraint, get_value_from_file
 
 allowed_types = ["competitive", "collaborative", "AR"]
-
-
 
 parser = argparse.ArgumentParser(description="Gets relevant dates for types of lessons.")
 parser.add_argument('-types', help="types of lessons", default=allowed_types, type=str, nargs='*')
@@ -18,19 +16,19 @@ parser.add_argument('-ed', help="Ending date (dd.mm.YYYY)", default=datetime.now
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
-parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-db', help="Database name", default="ExperientialSampling1", type=str)
 parser.add_argument('-f', help="Take first", type=int)
 					
 args = parser.parse_args()
 
 IP = args.ip+":"+str(args.port)
-username = 'roko'
-password = 'g546z6rhtf'
+username = get_value_from_file('config.txt', 'username')
+password = get_value_from_file('config.txt', 'password')
 DBname=args.db
 
 if any(type not in allowed_types for type in args.types):
 	print("allowed types: {}".format(allowed_types))
-	exit()
+	exit(1)
 
 conn = pymssql.connect(server=IP, user=username, password=password, database=DBname)
 print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))

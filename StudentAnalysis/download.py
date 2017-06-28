@@ -20,7 +20,7 @@ parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.s
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
-parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-db', help="Database name", default="ExperientialSampling1", type=str)
 					
 args = parser.parse_args()
 
@@ -38,7 +38,7 @@ file_type ={
 file_name = get_file_name_from_dates(file_type[args.type], args.date)
 if os.path.isfile(file_name): 
 	print("file with name {} already exists".format(file_name))
-	exit()
+	exit(1)
 
 conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
 print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))

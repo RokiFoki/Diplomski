@@ -158,7 +158,7 @@ with codecs.open(get_file_name_from_dates('logs_player', dates), 'r', "utf-8-sig
 				print(line)
 				
 				traceback.print_exc()
-				exit()
+				exit(1)
 				
 		
 			

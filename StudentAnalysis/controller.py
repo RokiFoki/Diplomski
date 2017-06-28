@@ -15,7 +15,7 @@ parser.add_argument('-f', help="Take first F elements", type=int)
 
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
-parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-db', help="Database name", default="ExperientialSampling1", type=str)
 
 action = parser.add_mutually_exclusive_group(required=True)
 action.add_argument('-t', help='calculate lessons/users (train system)', type=int)
@@ -32,7 +32,7 @@ execute_python_script("get_dates.py", arguments)
 dates_file_name = get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date])
 if not os.path.isfile(get_file_name_from_dates("dates_{}".format(args.type), [args.starting_date, args.ending_date])):
 	print("ERROR: get_dates.py didn't create {}".format(dates_file_name))
-	exit()
+	exit(1)
 
 preprocess = {
 	"AR": "quotes_AR.py", 

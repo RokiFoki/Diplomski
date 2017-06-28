@@ -104,7 +104,7 @@ with codecs.open(get_file_name_from_dates('logs_player_filtered', dates), 'r', "
 			print("cant parse:")
 			print(line)
 			traceback.print_exc()
-			exit()
+			exit(1)
 		
 		try:	
 			params = eval(JSONParams)

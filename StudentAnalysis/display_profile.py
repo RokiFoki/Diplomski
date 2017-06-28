@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description="calculates, displays student profi
 parser.add_argument('names', metavar="name", help="name of the student", type=str, nargs="+")
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
-parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-db', help="Database name", default="ExperientialSampling1", type=str)
 parser.add_argument('-d', help='display graph localy', action='store_true')
 parser.add_argument('-date', help='date in YYYYMMDD format', type=str, default=None, nargs="?")
 				
@@ -41,9 +41,9 @@ type_indicators = {
 }
 
 type_sql_collumns = {
-	"collaborative": "collaborative_score",
-	"AR": "AR_score",
-	"competitive": "competitive_score"
+	"collaborative": "collaborativescore",
+	"AR": "ARscore",
+	"competitive": "competitivescore"
 }
 
 type_fun = type
@@ -51,8 +51,7 @@ type_fun = type
 types = sorted(type_indicators.keys())
 
 grades = []
-for name in names:
-	
+for name in names:	
 	student_grades = []
 	for type in types:
 		file_name = "tmp/users/results/{}{}_real.txt".format(name, type_indicators[type])
@@ -68,7 +67,7 @@ for name in names:
 	grades.append(student_grades)
 		
 	print(name)
-	cursor.callproc("save_user_profile", (name, *[float(grade) for grade in student_grades], None,))
+	cursor.callproc("SaveUserProfile", (name, 0.2, 0.4, 0.6, args.date,))
 	
 	
 	print("query executed") 

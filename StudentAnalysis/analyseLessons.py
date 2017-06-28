@@ -196,9 +196,6 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 							role = roles[user_index]
 					except ValueError:
 						# happened once, name = 'Učiteljica (zamjenski tablet)', split_grupa = ['nesto', 'Uciteljica (zamjenski tablet)' (c != č)
-						
-						print(i, "PROBLEM:", name, 'is not in', split_grupa)
-						br += 1
 						continue
 						
 						
@@ -286,7 +283,7 @@ with codecs.open(get_file_name_from_dates('logs_collaborative', dates), 'r', "ut
 			traceback.print_exc()
 			
 			print(line)
-			exit()
+			exit(1)
 			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
 				fout.write(JSONParams+"\n")
 				

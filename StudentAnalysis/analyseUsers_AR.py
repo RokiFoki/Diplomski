@@ -164,7 +164,7 @@ with codecs.open(get_file_name_from_dates('logs_AR', dates), 'r', "utf-8-sig") a
 		except Exception as e:
 			print("PROBLEM OCCURED", i, e)
 			print(line)
-			exit()
+			exit(1)
 			with codecs.open('tmp.txt', 'w', "utf-8-sig") as fout:
 				fout.write(JSONParams+"\n")
 				
