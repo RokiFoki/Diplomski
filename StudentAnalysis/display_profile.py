@@ -8,11 +8,12 @@ import argparse
 import os
 import pymssql
 
-parser = argparse.ArgumentParser(description="calculates and displays student profile")
+parser = argparse.ArgumentParser(description="calculates, displays student profile and updates database with result")
 parser.add_argument('names', metavar="name", help="name of the student", type=str, nargs="+")
 parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
 parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
 parser.add_argument('-db', help="Database name", default="ExperientialSamplingAnalyticsDev2", type=str)
+parser.add_argument('-d', help='display graph localy', action='store_true')
 				
 args = parser.parse_args()
 
@@ -21,6 +22,10 @@ IP = args.ip+":"+str(args.port)
 DBname = args.db
 username = get_value_from_file('config.txt', 'username')
 password = get_value_from_file('config.txt', 'password')
+
+conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
+print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
+cursor = conn.cursor()  
 
 types_from_indicator = {
 	"collaborative" : "collaborative",	
@@ -40,10 +45,13 @@ type_sql_collumns = {
 	"competitive": "competitive_score"
 }
 
+type_fun = type
+
 types = sorted(type_indicators.keys())
 
 grades = []
 for name in names:
+	
 	student_grades = []
 	for type in types:
 		file_name = "tmp/users/results/{}{}_real.txt".format(name, type_indicators[type])
@@ -54,46 +62,31 @@ for name in names:
 			grade = 0
 
 		student_grades.append(grade)
+		
 
 	grades.append(student_grades)
 
-
-	conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
-	print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
-
-	cursor = conn.cursor()  
-
-
-	query = """ 
-	DECLARE @user_id int
-	SELECT TOP 1 @user_id = Id from [User] where Name =  '{6}'
-
-	begin tran
-
-		update UserTypeScores set {0}={3}, {1}={4}, {2}={5}
-		where UserId = @user_id and [date] = {7}
-
-		if @@rowcount = 0
-		begin
-			insert into UserTypeScores (UserId, {0}, {1}, {2}, [date])
-			values (@user_id, {3}, {4}, {5}, {7})
-		end
-
-	commit tran
-
-	""".format(*[ type_sql_collumns[type] for type in types], *student_grades, name, "null")
-
-	print("executing query ({})".format(query))
-
-	cursor.execute(query)
+	#print(type_fun(float(student_grades[0])))
+	
+	#query = """save_user_profile 'ADRIAN HRUBI', 1, 1, 1, null"""
+	#cursor.execute(query)
+	
+	print(name)
+	cursor.callproc("save_user_profile", (name, *[float(grade) for grade in student_grades], None,))
+	
+	
 	print("query executed") 
+	
+conn.commit()	
+conn.close() 
 
-plot_chart_plot(
-	grades,
-	types,
-	['b', 'r', 'g', 'm', 'y'],
-	names
-)
+if args.d:
+	plot_chart_plot(
+		grades,
+		types,
+		['b', 'r', 'g', 'm', 'y'],
+		names
+	)
 
 
 

@@ -1,5 +1,5 @@
 import os
-
+import time
 import codecs
 
 command = "python3"
@@ -16,10 +16,12 @@ def execute_python_script(name, params):
 	
 	print("executing {} {} {}".format(command, name, " ".join([str(param) for param in params])))
 	exit_status = os.system("{} {} {}".format(command, name, " ".join([str(param) for param in params])))
+	
 	if exit_status: # check both python3 and python
 		if tries == 0:
 			command = "python"
-			tries == 1
+			tries = 1
+			
 			execute_python_script(name, params)
 
 		else:
