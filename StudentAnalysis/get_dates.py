@@ -54,7 +54,9 @@ def generate_query(type, starting_date, ending_date):
 	return query
 	
 
+
 for type in args.types:	
+	dates = []
 	query = generate_query(type, args.sd, args.ed)
 
 	print("executing query ({})".format(query))
@@ -67,19 +69,20 @@ for type in args.types:
 	print("writing to {}".format('dates_{}.txt'.format(type)))
 	with codecs.open(file_name, 'w', "utf-8-sig") as f:
 		for row in cursor:	
-			print(row[0])
 			i += 1
 			if time.time() - start_time > 10: 
 				start_time = time.time()
 				print("i", i)
 			
 			f.write("{}\n".format(row[0]))
+			
+			dates.append(row[0].strip())
 		
 		print("i", i)
 		
 		print("finished writing to {}".format('dates_{}.txt'.format(type)))
-	
-	
+		
+		print("{} {}".format(type, " ".join(dates)))
 
 print('closing connection')
 conn.close() 

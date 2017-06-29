@@ -59,15 +59,15 @@ for name in names:
 			with open(file_name, "r") as f:
 				grade = np.mean(np.array([float(line.strip().split(":")[1]) for line in f.readlines()]))
 		else:
-			grade = 0
+			grade = 0.0
 
 		student_grades.append(grade)
 		
 
 	grades.append(student_grades)
 		
-	print(name)
-	cursor.callproc("SaveUserProfile", (name, *[student_grades], args.date,))
+	print(name, *student_grades)
+	cursor.callproc("SaveUserProfile", (name, *[ float(grade) for grade in student_grades], args.date,))
 	
 	
 	print("query executed") 

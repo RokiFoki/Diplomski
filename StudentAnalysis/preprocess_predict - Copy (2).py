@@ -11,18 +11,10 @@ from shutil import copyfile
 parser = argparse.ArgumentParser(description="script that extracts students data from by date stored data and stores it with previous extracted data if it exists (not nessesary from same dates) ")
 parser.add_argument('type', help="type of lessons. Allowed types: collaborative, competitive, AR", type=str)
 parser.add_argument('date', help="dates (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), nargs='+')
-parser.add_argument('-ip', help="IP address of the database", default="161.53.18.12", type=str)
-parser.add_argument('-port', help="PORT of the database", default=1955, type=int)
-parser.add_argument('-db', help="Database name", default="ExperientialSampling1", type=str)
 					
 args = parser.parse_args()
 dates = args.date
 type = args.type
-
-IP = args.ip+":"+str(args.port)
-DBname = args.db
-username = get_value_from_file('config.txt', 'username')
-password = get_value_from_file('config.txt', 'password')
 
 type_tag = {
 	"collaborative": "",
@@ -56,11 +48,6 @@ for date in dates:
 	
 print("finished ({} changes)".format(i))
 
-
-conn = pymssql.connect(server=IP, user=username, password=password, database=DBname) 
-print("successfully connected to server (IP:{}, username:{} DBname:{})".format(IP, username, DBname))
-cursor = conn.cursor()  
-
 i = 0
 print("create _real files")
 for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
@@ -79,20 +66,12 @@ for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
 		for date in student_dates:
 			date_str = date.strftime("%d.%m.%Y")
 			f.write("{}:{}\n".format(date_str, d[date_str]))
-			
-			
-			dt = date_str.strftime("%Y%m%d")
-			cursor.callproc("SaveUserProfile", (name, d[date_str], type, dt,))
 
 	i += 1
 			
 	os.remove(file_name)
 
-	
-conn.commit()	
-conn.close() 
 print("finished ({} changes)".format(i))
-
 
 with codecs.open(get_file_name_from_dates('users', dates), 'w', "utf-8-sig") as f:
 	for user in users:
