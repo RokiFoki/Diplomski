@@ -33,16 +33,16 @@ type_tag = {
 
 users = set()
 
-print("copying _real files")
+print("copying _real files to _tmp files")
 for file_name in glob.glob('tmp/users/results/*_real.txt'):
 	new_file_name = "{}_tmp.txt".format(file_name[:-9])
 	copyfile(file_name, new_file_name)
 
 i = 0
-print("copying _real files to _tmp files")
+print("adding data to _tmp files")
 for date in dates:
 	file = get_file_name_from_dates("users", [date], prefix="tmp/users/logs/", suffix="{}.txt".format(type_tag[type]))
-
+	
 	if os.path.isfile(file):
 		with codecs.open(file, "r", "utf-8-sig") as flog:
 			for line in flog:
@@ -92,7 +92,7 @@ type_names = {
 i = 0
 print("create _real files")
 for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
-	new_file_name = "{}_real.txt".format(file_name[:-8])	
+	new_file_name = "{}_real.txt".format(file_name[:-8])
 	d = {}
 	
 	with open(file_name, "r") as f:
@@ -108,11 +108,12 @@ for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
 			date_str = date.strftime("%d.%m.%Y")
 			f.write("{}:{}\n".format(date_str, d[date_str]))
 			
-			user_id, _ = get_name_and_type(new_file_name[starting_index:-ending_index])
+			user_id, tile_type = get_name_and_type(new_file_name[starting_index:-ending_index])
 			
-			print(user_id)
-			dt = date.strftime("%Y%m%d")
-			cursor.callproc("SaveDateUserScores", (user_id, d[date_str], type_names[type], dt,))
+			print(user_id, tile_type)
+			if tile_type == type:
+				dt = date.strftime("%Y%m%d")
+				cursor.callproc("SaveDateUserScores", (user_id, d[date_str], type_names[tile_type], dt,))
 
 	i += 1
 			
