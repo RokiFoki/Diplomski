@@ -113,6 +113,7 @@ for file_name in glob.glob('tmp/users/results/*_tmp.txt'):
 			print(user_id, tile_type)
 			if tile_type == type:
 				dt = date.strftime("%Y%m%d")
+				
 				cursor.callproc("SaveDateUserScores", (user_id, d[date_str], type_names[tile_type], dt,))
 
 	i += 1
