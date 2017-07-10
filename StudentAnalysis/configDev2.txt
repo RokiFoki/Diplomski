@@ -1,2 +1,0 @@
-username=roko
-password=g546z6rhtf

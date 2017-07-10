@@ -1,0 +1,55 @@
+import glob
+from datetime import datetime
+from utils import execute_python_script
+import argparse
+
+parser = argparse.ArgumentParser(description="Saves and saves student profile to database")
+parser.add_argument('date', help="dated (dd.mm.YYYY)", type=lambda x: datetime.strptime(x, '%d.%m.%Y'), default=datetime.now().strftime('%d.%m.%Y'), nargs='?')
+				
+args = parser.parse_args()
+
+date = args.date.strftime('%Y%m%d')
+
+print(date)
+
+first_part = "tmp/users/results/"
+second_part = "_real.txt"
+
+
+starting_index = len(first_part)
+ending_index = len(second_part)
+
+
+def get_name_and_type(oname):
+	name = oname[:]
+	if name.endswith("_AR"):
+		log_type = "AR"
+		name = name[:-3]
+	elif name.endswith("_player"):
+		log_type = "competitive"
+		name = name[:-7]
+	else:
+		log_type = "collaborative"
+
+	print(name, log_type)
+	return name, log_type
+
+
+names = set()
+date_types = set()
+table = {}
+
+
+for file_name in glob.glob(first_part+"*"+second_part):
+	file_name = file_name[starting_index:-ending_index]
+
+	print(file_name)
+	student_name, log_type = get_name_and_type(file_name)
+	
+	names.add(student_name)
+
+
+execute_python_script("display_profile.py", ['"{}"'.format(name) for name in names] + ["-date", date])
+
+	
+
